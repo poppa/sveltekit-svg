@@ -29,10 +29,7 @@ function readSvg(options: Options = { type: 'component' }) {
           const cached = cache.get(cacheKey)
 
           if (cached) {
-            console.log(`Found cache:`, cacheKey)
             return cached
-          } else {
-            console.log(`No cache:`, cacheKey)
           }
 
           const filename = id.replace(/\.svg(\?.*)$/, '.svg')
