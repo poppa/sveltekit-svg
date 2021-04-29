@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc",
-    "publish": "yarn publish --access public"
+    "pub": "yarn publish --access public"
   },
   "main": "dist/index.js",
   "license": "MIT",
