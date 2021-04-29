@@ -2,6 +2,7 @@
   "name": "@poppanator/sveltekit-svg",
   "version": "0.0.1",
   "description": "Import SVG files as Svelte components in SvelteKit",
+  "private": false,
   "keywords": [
     "sveltekit-plugin",
     "svg",
@@ -13,7 +14,8 @@
   ],
   "scripts": {
     "dev": "tsc -w",
-    "build": "tsc"
+    "build": "tsc",
+    "publish": "yarn publish --access public"
   },
   "main": "dist/index.js",
   "license": "MIT",
