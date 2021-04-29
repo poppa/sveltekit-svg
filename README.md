@@ -1,4 +1,4 @@
-# SvelteKit Inline SVG Plugin
+# SvelteKit SVG Plugin
 
 **NOTE!** _This package is not yet released_
 
