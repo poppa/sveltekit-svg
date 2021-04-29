@@ -21,6 +21,14 @@
     "name": "Pontus Östlund",
     "url": "https://github.com/poppa"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/poppa/sveltekit-svg"
+  },
+  "bugs": {
+    "url": "https://github.com/poppa/sveltekit-svg/issues"
+  },
+  "homepage": "https://github.com/poppa/sveltekit-svg#readme",
   "devDependencies": {
     "@types/node": "^15.0.1",
     "@types/svgo": "^2.3.0",
