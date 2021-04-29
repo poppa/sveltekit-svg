@@ -1,7 +1,5 @@
 # SvelteKit SVG Plugin
 
-**NOTE!** _This package is not yet released_
-
 This plugin makes it possible to import SVG files as Svelte
 components, inline SVG code or urls.
 
