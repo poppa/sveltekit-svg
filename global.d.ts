@@ -1,5 +1,3 @@
-/// <reference types="@poppanator/sveltekit-svg" />
-
 declare module '*.svg?src' {
   const content: string
   export default content
