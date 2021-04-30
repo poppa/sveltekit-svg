@@ -25,4 +25,3 @@ jobs:
         with:
           token: ${{ secrets.NPM_TOKEN }}
           access: public
-          scope: '@poppanator'
