@@ -2,11 +2,11 @@
 
 name: Publish NPM
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ master ]
+    branches: [master]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -21,6 +21,7 @@ jobs:
         with:
           node-version: 10
       - run: yarn install --pure-lockfile --production
+      - run: yarn wf:bump
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
