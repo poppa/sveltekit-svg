@@ -43,6 +43,6 @@
     "svgo": "^2.3.0"
   },
   "peerDependencies": {
-    "svelte": "3.37.0"
+    "svelte": "3.x"
   }
 }
