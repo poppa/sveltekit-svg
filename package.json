@@ -15,6 +15,7 @@
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc",
+    "bump": "yarn version --patch",
     "npm:publish": "yarn build && yarn publish --patch --access public"
   },
   "main": "dist/index.js",
