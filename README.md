@@ -13,7 +13,7 @@ components, inline SVG code or urls.
 In your `svelte.config.cjs`
 
 ```js
-const svg = import('@poppanator/sveltekit-svg')
+const svg = require('@poppanator/sveltekit-svg')
 
 module.exports = {
   ...,
