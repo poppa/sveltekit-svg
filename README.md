@@ -20,8 +20,10 @@ module.exports = {
 
   kit: {
     ...,
-    // Options are optional
-    plugins: [svg(options)]
+    vite: {
+      // Options are optional
+      plugins: [svg(options)]
+    }
   }
 }
 ```

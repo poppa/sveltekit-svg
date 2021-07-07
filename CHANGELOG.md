@@ -5,6 +5,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.1.3] - 2021-05-12
+
+### Changed
+
+- Updated README to reflect that the `plugins` property should be a member of
+  the `vite` property
+
 ## [0.1.2] - 2021-05-12
 
 ### Changed
