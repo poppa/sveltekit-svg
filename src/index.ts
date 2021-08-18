@@ -39,7 +39,7 @@ function readSvg(options: Options = { type: 'component' }) {
           if (type === 'src' || (!type && options.type === 'src')) {
             data = `\nexport default \`${opt.data}\`;`
           } else {
-            const { js } = compile(data, {
+            const { js } = compile(opt.data, {
               css: false,
               filename: id,
               hydratable: true,
