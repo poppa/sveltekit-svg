@@ -5,6 +5,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.1.4] - 2021-08-19
+
+### Changed
+
+- The Svelte component wasn't using the optimized SVG output.
+  Thanks @bummzack (https://github.com/bummzack) for the PR.
+
 ## [0.1.3] - 2021-07-07
 
 ### Changed
