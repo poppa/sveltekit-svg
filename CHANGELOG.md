@@ -5,6 +5,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.1.7] 2021-09-15
+
+### Fixed
+
+- No changes, just a version bump to sync the CHANGELOG file
+
 ## [0.1.6] - 2021-09-15
 
 ### Fixed
