@@ -34,7 +34,10 @@ function readSvg(options: Options = { type: 'component' }) {
 
           const filename = id.replace(/\.svg(\?.*)$/, '.svg')
           let data = (await readFile(filename)).toString('utf-8')
-          const opt = optimize(data, options.svgoOptions)
+          // The typedef if wrong. The actual method expects options to be
+          // an object or null
+          // @ts-expect-error
+          const opt = optimize(data, options.svgoOptions || null)
 
           if (type === 'src' || (!type && options.type === 'src')) {
             data = `\nexport default \`${opt.data}\`;`
@@ -47,7 +50,8 @@ function readSvg(options: Options = { type: 'component' }) {
               generate: isBuild ? 'ssr' : 'dom',
             })
 
-            data = js.code
+            delete js.map
+            data = js
           }
 
           cache.set(cacheKey, data)
@@ -57,7 +61,8 @@ function readSvg(options: Options = { type: 'component' }) {
           console.error(
             'Failed reading SVG "%s": %s',
             id,
-            (err as Error).message
+            (err as Error).message,
+            err
           )
         }
       }
