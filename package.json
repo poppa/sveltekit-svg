@@ -15,8 +15,7 @@
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc",
-    "bump": "yarn version --patch",
-    "npm:publish": "yarn build && yarn publish --patch --access public"
+    "bump": "yarn version --patch"
   },
   "main": "dist/index.js",
   "license": "MIT",
