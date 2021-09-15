@@ -10,7 +10,7 @@ components, inline SVG code or urls.
 
 ## Usage
 
-In your `svelte.config.cjs`
+In your `svelte.config.js`
 
 ```js
 const svg = require('@poppanator/sveltekit-svg')
