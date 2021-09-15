@@ -5,6 +5,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.1.5] - 2021-09-15
+
+### Fixed
+
+- `svgo.optimize()` expects the options argument to be an object or `null`.
+  However, the TS typings says object or `undefined`, which previously seem
+  to have been fine but no longer is.
+
+  This solves bug report [#8](https://github.com/poppa/sveltekit-svg/issues/8)
+
 ## [0.1.4] - 2021-08-19
 
 ### Changed
