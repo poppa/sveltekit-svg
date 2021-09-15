@@ -1,0 +1,21 @@
+{
+  "name": "test-app",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "svelte-kit dev",
+    "build": "svelte-kit build",
+    "preview": "svelte-kit preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
+  },
+  "devDependencies": {
+    "@sveltejs/kit": "next",
+    "svelte": "^3.34.0",
+    "svelte-check": "^2.0.0",
+    "svelte-preprocess": "^4.9.0",
+    "tslib": "^2.0.0",
+    "typescript": "^4.4.0",
+    "@poppanator/sveltekit-svg": "^0.1.4"
+  },
+  "type": "module"
+}
