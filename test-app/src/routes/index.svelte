@@ -2,7 +2,7 @@
   import LogoSvgComponent from '../assets/sample-logo.svg'
   import logoSvgString from '../assets/sample-logo.svg?src'
   import logoSvgUrl from '../assets/sample-logo.svg?url'
-  import LogoSvgFromStatic from '../../static/sample-logo.svg'
+  import LogoSvgFromStatic from '../../static/static-sample-logo.svg'
 </script>
 
 <h2>As inline component </h2>
