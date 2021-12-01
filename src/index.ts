@@ -8,6 +8,19 @@ interface Options {
   svgoOptions?: OptimizeOptions
 }
 
+const svgRegex = /(<svg.*?)(>.*)/s
+
+function addComponentProps(data: string): string {
+  const parts = svgRegex.exec(data)
+
+  if (!parts) {
+    throw new Error('Invalid SVG')
+  }
+
+  const [, head, body] = parts
+  return `${head} {...$$props}${body}`
+}
+
 function readSvg(options: Options = { type: 'component' }) {
   const resvg = /\.svg(?:\?(src|url|component))?$/
   const cache = new Map()
@@ -42,6 +55,7 @@ function readSvg(options: Options = { type: 'component' }) {
           if (type === 'src' || (!type && options.type === 'src')) {
             data = `\nexport default \`${opt.data}\`;`
           } else {
+            opt.data = addComponentProps(opt.data)
             const { js } = compile(opt.data, {
               css: false,
               filename: id,

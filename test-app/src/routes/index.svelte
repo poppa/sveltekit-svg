@@ -1,5 +1,5 @@
 <script lang="ts">
-  import LogoSvgComponent from '../assets/sample-logo.svg'
+  import LogoSvgComponent from '../assets/sample-logo.svg?component'
   import logoSvgString from '../assets/sample-logo.svg?src'
   import logoSvgUrl from '../assets/sample-logo.svg?url'
   import LogoSvgFromStatic from '../../static/static-sample-logo.svg'
@@ -16,3 +16,6 @@
 
 <h2>As Inline component from static folder</h2>
 <LogoSvgFromStatic />
+
+<h2>With component props mas</h2>
+<LogoSvgComponent width="200" />

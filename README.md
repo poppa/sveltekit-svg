@@ -30,7 +30,7 @@ module.exports = {
 
 ## Svelte usage
 
-Import as a Svelte component:
+**Import as a Svelte component:**
 
 ```svelte
 <script>
@@ -40,7 +40,13 @@ import Logo from "./logo.svg";
 <Logo />
 ```
 
-Import as file path:
+When used as a component you can also pas attributes to the SVG
+
+```svelte
+<Logo width="200" />
+```
+
+**Import as file path:**
 
 ```svelte
 <script>
@@ -50,7 +56,7 @@ import logoUrl from "./logo.svg?url";
 <img src={logoUrl} />
 ```
 
-Import as code:
+**Import as code:**
 
 ```svelte
 <script>
@@ -72,15 +78,24 @@ interface Options {
 ## Typescript
 
 For Typescript not to complain about `file.svg?component` et.al, add the
-following to your application's `global.d.ts`
+following to your application's `global.d.ts`. _(`global.d.ts` is just an
+arbitrary file. It can be named whatever and reside wherever as long as
+your Typescript config recognize it)_
 
 ```ts
-declare module '*.svg?src' {
-  const content: string
+declare module '*.svg' {
+  import { SvelteComponent } from 'svelte'
+  const content: SvelteComponent
   export default content
 }
 
 declare module '*.svg?component' {
+  import { SvelteComponent } from 'svelte'
+  const content: SvelteComponent
+  export default content
+}
+
+declare module '*.svg?src' {
   const content: string
   export default content
 }

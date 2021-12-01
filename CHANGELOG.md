@@ -5,6 +5,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.2.0] 2021-12-01
+
+### Added
+
+- It is now possible to pass attributes to the SVG when it is imported as a
+  Svelte component
+
+  ```svelte
+  <script>
+  import Icon from './icon.svelte'
+  </script>
+
+  <Icon width="200" />
+  ```
+
+  Thanks to @AradAral for pushing on this issue
+
 ## [0.1.8] 2021-11-25
 
 ### Maintenance
