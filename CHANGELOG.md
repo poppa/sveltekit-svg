@@ -5,6 +5,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.2.2] 2021-12-09
+
+### Fix
+
+- Update `transform` params for Vite 2.7.0.
+  This is just an internal change. Thank you
+  [James Camilleri](https://github.com/james-camilleri) for the fix.
+
 ## [0.2.1] 2021-12-07
 
 ### Fix
