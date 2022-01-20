@@ -5,9 +5,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.2.3] 2022-01-20
+
+### Fixed
+
+- Updated README to reflect reality. Mainly use ESM in example
+
 ## [0.2.2] 2021-12-09
 
-### Fix
+### Fixed
 
 - Update `transform` params for Vite 2.7.0.
   This is just an internal change. Thank you
@@ -15,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.1] 2021-12-07
 
-### Fix
+### Fixed
 
 - Noticed that the `index.d.ts` file was missing from the package.
   So no code changes
@@ -41,7 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Maintenance
 
-- No code chnages, upgraded package dependencies
+- No code changes, upgraded package dependencies
 
 ## [0.1.7] 2021-09-15
 
