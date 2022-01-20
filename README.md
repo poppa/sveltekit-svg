@@ -87,13 +87,13 @@ your Typescript config recognize it)_
 
 ```ts
 declare module '*.svg' {
-  import { SvelteComponent } from 'svelte'
+  import type { SvelteComponent } from 'svelte'
   const content: SvelteComponent
   export default content
 }
 
 declare module '*.svg?component' {
-  import { SvelteComponent } from 'svelte'
+  import type { SvelteComponent } from 'svelte'
   const content: SvelteComponent
   export default content
 }
