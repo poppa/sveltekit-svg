@@ -1,7 +1,7 @@
 /// <reference types="@sveltejs/kit" />
 
 declare module '*.svg?component' {
-  import { SvelteComponent } from 'svelte'
+  import type { SvelteComponent } from 'svelte'
   const src: SvelteComponent
   export default content
 }
@@ -17,7 +17,7 @@ declare module '*.svg?url' {
 }
 
 declare module '*.svg' {
-  import { SvelteComponent } from 'svelte'
+  import type { SvelteComponent } from 'svelte'
   const src: SvelteComponent
   export default content
 }
