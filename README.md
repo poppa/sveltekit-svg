@@ -13,9 +13,10 @@ components, inline SVG code or urls.
 In your `svelte.config.js`
 
 ```js
-const svg = require('@poppanator/sveltekit-svg')
+import svg from '@poppanator/sveltekit-svg'
 
-module.exports = {
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
   ...,
 
   kit: {
@@ -26,6 +27,8 @@ module.exports = {
     }
   }
 }
+
+export default config
 ```
 
 ## Svelte usage
