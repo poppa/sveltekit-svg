@@ -1,6 +1,6 @@
 {
   "name": "@poppanator/sveltekit-svg",
-  "version": "0.2.3",
+  "version": "0.2.4-0",
   "description": "Import SVG files as Svelte components in SvelteKit",
   "private": false,
   "keywords": [
