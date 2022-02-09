@@ -12,7 +12,10 @@ const config = {
     // hydrate the <div id="svelte"> element in src/app.html
     target: '#svelte',
     vite: {
-      plugins: [svg()],
+      plugins: [
+        svg({ includePaths: [`src/assets/**/*.svg`, 'src/other/*.svg'] }),
+        svg({ includePaths: [`${process.cwd()}/static/**/*.svg`] }),
+      ],
     },
   },
 }
