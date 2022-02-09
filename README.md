@@ -31,6 +31,38 @@ const config = {
 export default config
 ```
 
+You can also pass multiple `svg` transformers based on paths if you want to
+apply different SVGO options for different SVGs
+
+```js
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  ...,
+
+  kit: {
+    ...,
+    vite: {
+      plugins: [
+        svg({
+          includePaths: ["./src/lib/icons/**/*.svg"],
+          svgoOptions: {
+            multipass: true,
+            plugins: ["preset-default", { name: "removeAttrs", params: { attrs: "(fill|stroke)" }}],
+          },
+        }),
+        svg({
+          includePaths: ["./src/lib/graphics/**"],
+          svgoOptions: {
+            multipass: true,
+            plugins: ["preset-default" ],
+          },
+        }),
+      ]
+    }
+  }
+}
+```
+
 ## Svelte usage
 
 **Import as a Svelte component:**
@@ -43,7 +75,7 @@ import Logo from "./logo.svg";
 <Logo />
 ```
 
-When used as a component you can also pas attributes to the SVG
+When used as a component you can also pass attributes to the SVG
 
 ```svelte
 <Logo width="200" />
@@ -71,12 +103,34 @@ import logo from "./logo.svg?src";
 
 ## Options
 
-```ts
+````ts
 interface Options {
+  /**
+   * Output type
+   * @default "component"
+   */
   type?: 'src' | 'url' | 'component'
+  /**
+   * Verbatim [SVGO](https://github.com/svg/svgo) options
+   */
   svgoOptions?: svgo.OptimizeOptions
+  /**
+   * Paths to apply the SVG plugin on. This can be useful if you want to apply
+   * different SVGO options/plugins on different SVGs.
+   *
+   * The paths are [minimatch](https://github.com/isaacs/minimatch) globs and
+   * should be relative to your `svelte.config.js` file.
+   *
+   * @example
+   * ```
+   * {
+   *   includePaths: ['src/assets/icons/*.svg']
+   * }
+   * ```
+   */
+  includePaths?: string[]
 }
-```
+````
 
 ## Typescript
 
@@ -87,14 +141,12 @@ your Typescript config recognize it)_
 
 ```ts
 declare module '*.svg' {
-  import type { SvelteComponent } from 'svelte'
-  const content: SvelteComponent
+  const content: any
   export default content
 }
 
 declare module '*.svg?component' {
-  import type { SvelteComponent } from 'svelte'
-  const content: SvelteComponent
+  const content: any
   export default content
 }
 
