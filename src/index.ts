@@ -24,7 +24,9 @@ function addComponentProps(data: string): string {
 // TODO: Remove this when Vite 2.7.0 is well-adopted.
 // https://github.com/vitejs/vite/blob/v2.7.1/packages/vite/CHANGELOG.md#270-2021-12-07
 function getSsrOption(transformOptions: boolean | { ssr: boolean }) {
-  return typeof transformOptions === 'object' ? transformOptions.ssr : transformOptions
+  return typeof transformOptions === 'object'
+    ? transformOptions.ssr
+    : transformOptions
 }
 
 function readSvg(options: Options = { type: 'component' }) {
@@ -33,7 +35,11 @@ function readSvg(options: Options = { type: 'component' }) {
 
   return {
     name: 'sveltekit-svg',
-    async transform(source: string, id: string, transformOptions: boolean | { ssr: boolean }) {
+    async transform(
+      source: string,
+      id: string,
+      transformOptions: boolean | { ssr: boolean }
+    ) {
       const match = id.match(resvg)
 
       const isBuild = getSsrOption(transformOptions)
