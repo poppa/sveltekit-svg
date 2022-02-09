@@ -1,11 +1,34 @@
 import { optimize, OptimizeOptions } from 'svgo'
 import { compile } from 'svelte/compiler'
 import { promises } from 'fs'
+import { match as globmatch } from 'minimatch'
 const { readFile } = promises
 
 interface Options {
+  /**
+   * Output type
+   * @default "component"
+   */
   type?: 'src' | 'url' | 'component'
+  /**
+   * Verbatim [SVGO](https://github.com/svg/svgo) options
+   */
   svgoOptions?: OptimizeOptions
+  /**
+   * Paths to apply the SVG plugin on. This can be useful if you want to apply
+   * different SVGO options/plugins on different SVGs.
+   *
+   * The paths are [minimatch](https://github.com/isaacs/minimatch) globs and
+   * should be relative to your `svelte.config.js` file.
+   *
+   * @example
+   * ```
+   * {
+   *   includePaths: ['src/assets/icons/*.svg']
+   * }
+   * ```
+   */
+  includePaths?: string[]
 }
 
 const svgRegex = /(<svg.*?)(>.*)/s
@@ -29,9 +52,24 @@ function getSsrOption(transformOptions: boolean | { ssr: boolean }) {
     : transformOptions
 }
 
+const cwd = process.cwd()
+
 function readSvg(options: Options = { type: 'component' }) {
   const resvg = /\.svg(?:\?(src|url|component))?$/
   const cache = new Map()
+
+  if (options.includePaths) {
+    // Normalize the include paths patterns ahead of time
+    options.includePaths = options.includePaths.map((pattern) => {
+      if (pattern.startsWith(cwd)) {
+        pattern = pattern.substring(cwd.length + 1)
+      } else if (pattern.startsWith('./') || pattern.startsWith('.\\')) {
+        pattern = pattern.substring(2)
+      }
+
+      return pattern
+    })
+  }
 
   return {
     name: 'sveltekit-svg',
@@ -40,8 +78,23 @@ function readSvg(options: Options = { type: 'component' }) {
       id: string,
       transformOptions: boolean | { ssr: boolean }
     ) {
-      const match = id.match(resvg)
+      if (options.includePaths) {
+        let internalId = id.substring(cwd.length + 1)
 
+        if (internalId.includes('?')) {
+          internalId = internalId.split('?').shift() ?? ''
+        }
+
+        const isIncluded = options.includePaths.some((pattern) => {
+          return globmatch([internalId], pattern).some((val) => !!val)
+        })
+
+        if (!isIncluded) {
+          return undefined
+        }
+      }
+
+      const match = id.match(resvg)
       const isBuild = getSsrOption(transformOptions)
 
       if (match) {
