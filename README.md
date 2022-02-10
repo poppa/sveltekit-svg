@@ -44,14 +44,14 @@ const config = {
     vite: {
       plugins: [
         svg({
-          includePaths: ["./src/lib/icons/**/*.svg"],
+          includePaths: ["./src/lib/icons/", "./src/assets/icons/"],
           svgoOptions: {
             multipass: true,
             plugins: ["preset-default", { name: "removeAttrs", params: { attrs: "(fill|stroke)" }}],
           },
         }),
         svg({
-          includePaths: ["./src/lib/graphics/**"],
+          includePaths: ["./src/lib/graphics/"],
           svgoOptions: {
             multipass: true,
             plugins: ["preset-default" ],
@@ -118,13 +118,13 @@ interface Options {
    * Paths to apply the SVG plugin on. This can be useful if you want to apply
    * different SVGO options/plugins on different SVGs.
    *
-   * The paths are [minimatch](https://github.com/isaacs/minimatch) globs and
-   * should be relative to your `svelte.config.js` file.
+   * The paths are path prefixes and should be relative to your
+   * `svelte.config.js` file.
    *
    * @example
    * ```
    * {
-   *   includePaths: ['src/assets/icons/*.svg']
+   *   includePaths: ['src/assets/icons/', 'src/images/icons/']
    * }
    * ```
    */

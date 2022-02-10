@@ -13,8 +13,8 @@ const config = {
     target: '#svelte',
     vite: {
       plugins: [
-        svg({ includePaths: [`src/assets/**/*.svg`, 'src/other/*.svg'] }),
-        svg({ includePaths: [`${process.cwd()}/static/**/*.svg`] }),
+        svg({ includePaths: [`./src/assets/`, 'src/other/'] }),
+        svg({ includePaths: [`${process.cwd()}/static`] }),
       ],
     },
   },

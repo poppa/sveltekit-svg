@@ -1,7 +1,7 @@
 import { optimize, OptimizeOptions } from 'svgo'
 import { compile } from 'svelte/compiler'
 import { promises } from 'fs'
-import { match as globmatch } from 'minimatch'
+import path from 'path'
 const { readFile } = promises
 
 interface Options {
@@ -18,13 +18,13 @@ interface Options {
    * Paths to apply the SVG plugin on. This can be useful if you want to apply
    * different SVGO options/plugins on different SVGs.
    *
-   * The paths are [minimatch](https://github.com/isaacs/minimatch) globs and
-   * should be relative to your `svelte.config.js` file.
+   * The paths are path prefixes and should be relative to your
+   * `svelte.config.js` file.
    *
    * @example
    * ```
    * {
-   *   includePaths: ['src/assets/icons/*.svg']
+   *   includePaths: ['src/assets/icons/', 'src/images/icons/']
    * }
    * ```
    */
@@ -52,22 +52,14 @@ function getSsrOption(transformOptions: boolean | { ssr: boolean }) {
     : transformOptions
 }
 
-const cwd = process.cwd()
-
 function readSvg(options: Options = { type: 'component' }) {
   const resvg = /\.svg(?:\?(src|url|component))?$/
   const cache = new Map()
 
   if (options.includePaths) {
-    // Normalize the include paths patterns ahead of time
+    // Normalize the include paths prefixes ahead of time
     options.includePaths = options.includePaths.map((pattern) => {
-      if (pattern.startsWith(cwd)) {
-        pattern = pattern.substring(cwd.length + 1)
-      } else if (pattern.startsWith('./') || pattern.startsWith('.\\')) {
-        pattern = pattern.substring(2)
-      }
-
-      return pattern
+      return path.resolve(path.normalize(pattern))
     })
   }
 
@@ -79,14 +71,8 @@ function readSvg(options: Options = { type: 'component' }) {
       transformOptions: boolean | { ssr: boolean }
     ) {
       if (options.includePaths) {
-        let internalId = id.substring(cwd.length + 1)
-
-        if (internalId.includes('?')) {
-          internalId = internalId.split('?').shift() ?? ''
-        }
-
         const isIncluded = options.includePaths.some((pattern) => {
-          return globmatch([internalId], pattern).some((val) => !!val)
+          return id.startsWith(pattern)
         })
 
         if (!isIncluded) {
