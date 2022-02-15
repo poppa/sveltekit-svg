@@ -102,8 +102,10 @@ function readSvg(options: Options = { type: 'component' }) {
           let data = (await readFile(filename)).toString('utf-8')
           // The typedef if wrong. The actual method expects options to be
           // an object or null
-          // @ts-expect-error
-          const opt = optimize(data, options.svgoOptions || null)
+          const opt = optimize(data, {
+            path: filename,
+            ...(options.svgoOptions || {}),
+          })
 
           if (type === 'src' || (!type && options.type === 'src')) {
             data = `\nexport default \`${opt.data}\`;`
