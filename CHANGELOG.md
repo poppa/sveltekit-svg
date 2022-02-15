@@ -5,6 +5,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.3.0] 2022-02-15
+
+Thanks to [Jani](https://github.com/ljani) for the contributions
+
+### Added
+
+- It's now possible to pass multiple `svg` transformers based on path prefixes
+  if you want to apply different SVGO options for SVGs in different locations.
+
+  Example:
+
+  ```ts
+  const config = {
+    ...,
+
+    kit: {
+      ...,
+      vite: {
+        plugins: [
+          svg({
+            includePaths: ["./src/lib/icons/", "./src/assets/icons/"],
+            svgoOptions: {
+              multipass: true,
+              plugins: [
+                "preset-default", {
+                  name: "removeAttrs", params: { attrs: "(fill|stroke)" }
+                }
+              ],
+            },
+          }),
+          svg({
+            includePaths: ["./src/lib/graphics/"],
+            svgoOptions: {
+              multipass: true,
+              plugins: ["preset-default" ],
+            },
+          }),
+        ]
+      }
+    }
+  }
+  ```
+
+  `includePaths` will be normalized, so they can be both absolute and relative
+  (to the current working directory).
+
+### Fixed
+
+- Passing `path` property to SVGO by default
+
 ## [0.2.3] 2022-01-20
 
 ### Fixed
