@@ -101,8 +101,6 @@ function readSvg(options: Options = { type: 'component' }) {
 
           const filename = id.replace(/\.svg(\?.*)$/, '.svg')
           let data = (await readFile(filename)).toString('utf-8')
-          // The typedef if wrong. The actual method expects options to be
-          // an object or null
           const opt = optimize(data, {
             path: filename,
             ...(options.svgoOptions || {}),
