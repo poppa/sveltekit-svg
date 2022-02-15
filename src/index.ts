@@ -59,7 +59,8 @@ function readSvg(options: Options = { type: 'component' }) {
   if (options.includePaths) {
     // Normalize the include paths prefixes ahead of time
     options.includePaths = options.includePaths.map((pattern) => {
-      return path.resolve(path.normalize(pattern))
+      const filepath = path.resolve(path.normalize(pattern))
+      return path.sep === '\\' ? filepath.replace(/\\/g, '/') : filepath
     })
   }
 
