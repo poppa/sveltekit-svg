@@ -104,7 +104,7 @@ function readSvg(options: Options = { type: 'component' }) {
           const opt = options.svgoOptions !== false ? optimize(data, {
             path: filename,
             ...(options.svgoOptions || {}),
-          }) : data;
+          }) : { data };
 
           if (type === 'src' || (!type && options.type === 'src')) {
             data = `\nexport default \`${opt.data}\`;`
