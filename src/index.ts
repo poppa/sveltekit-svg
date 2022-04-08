@@ -13,7 +13,7 @@ interface Options {
   /**
    * Verbatim [SVGO](https://github.com/svg/svgo) options
    */
-  svgoOptions?: OptimizeOptions
+  svgoOptions?: OptimizeOptions | false
   /**
    * Paths to apply the SVG plugin on. This can be useful if you want to apply
    * different SVGO options/plugins on different SVGs.
@@ -101,10 +101,10 @@ function readSvg(options: Options = { type: 'component' }) {
 
           const filename = id.replace(/\.svg(\?.*)$/, '.svg')
           let data = (await readFile(filename)).toString('utf-8')
-          const opt = optimize(data, {
+          const opt = options.svgoOptions !== false ? optimize(data, {
             path: filename,
             ...(options.svgoOptions || {}),
-          })
+          }) : data;
 
           if (type === 'src' || (!type && options.type === 'src')) {
             data = `\nexport default \`${opt.data}\`;`
