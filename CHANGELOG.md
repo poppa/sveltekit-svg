@@ -5,6 +5,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.3.2] 2022-04-11
+
+Thanks to [Miguel Camba](https://github.com/cibernox) for the contribution.
+
+### Added
+
+- By giving `false` as value to the SVGO option you can bypass SVGO altogether.
+  This is useful when optimization might break SVG animations and alike.
+
 ## [0.3.0] 2022-02-15
 
 Thanks to [Jani](https://github.com/ljani) for the contributions
