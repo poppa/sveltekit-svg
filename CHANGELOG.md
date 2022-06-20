@@ -5,6 +5,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.3.4] 2022-06-20
+
+### Changed
+
+- Type definitions for the update Svgo dependency are stricter. If we get an
+  `OptimizeError` from SVGO we notify and return early
+
 ## [0.3.3] 2022-06-20
 
 No changes. Updated package dependencies and added to the README file.

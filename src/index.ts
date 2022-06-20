@@ -1,4 +1,4 @@
-import { optimize, OptimizeOptions } from 'svgo'
+import { optimize, type OptimizedError, type OptimizeOptions } from 'svgo'
 import { compile } from 'svelte/compiler'
 import { promises } from 'fs'
 import path from 'path'
@@ -42,6 +42,10 @@ function addComponentProps(data: string): string {
 
   const [, head, body] = parts
   return `${head} {...$$props}${body}`
+}
+
+function isSvgoOptimizeError(obj: unknown): obj is OptimizedError {
+  return typeof obj === 'object' && obj !== null && !('data' in obj)
 }
 
 // TODO: Remove this when Vite 2.7.0 is well-adopted.
@@ -101,10 +105,18 @@ function readSvg(options: Options = { type: 'component' }) {
 
           const filename = id.replace(/\.svg(\?.*)$/, '.svg')
           let data = (await readFile(filename)).toString('utf-8')
-          const opt = options.svgoOptions !== false ? optimize(data, {
-            path: filename,
-            ...(options.svgoOptions || {}),
-          }) : { data };
+          const opt =
+            options.svgoOptions !== false
+              ? optimize(data, {
+                  path: filename,
+                  ...(options.svgoOptions || {}),
+                })
+              : { data }
+
+          if (isSvgoOptimizeError(opt)) {
+            console.error("Got optimize error from SVGO:", opt)
+            return undefined
+          }
 
           if (type === 'src' || (!type && options.type === 'src')) {
             data = `\nexport default \`${opt.data}\`;`
