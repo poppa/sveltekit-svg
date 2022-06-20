@@ -138,6 +138,28 @@ interface Options {
 }
 ````
 
+## Notes on using with _Jest_
+
+According to a report [_Jest_](https://jestjs.io/) will have trouble
+transforming `.svg` files when such is imported as a Svelte component.
+
+The solution seems to be to add a module name mapper entry in the the
+`jest.config.cjs` file, like so:
+
+```js
+module.exports = {
+  // ... other config
+  moduleNameMapper: {
+    // ... other mappers
+    '^.+\\.svg$': '<rootDir>/src/lib/EmptyIcon.svelte',
+  },
+}
+```
+
+where `src/lib/EmptyIcon.svelte` can contain just `<svg />`.
+
+> [See the reported issue and solution](https://github.com/poppa/sveltekit-svg/issues/22)
+
 ## Typescript
 
 For Typescript not to complain about `file.svg?component` et.al, add the
