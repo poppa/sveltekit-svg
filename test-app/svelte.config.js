@@ -9,8 +9,7 @@ const config = {
   preprocess: preprocess(),
   kit: {
     adapter: adapter(),
-    // hydrate the <div id="svelte"> element in src/app.html
-    target: '#svelte',
+    prerender: { default: true },
     vite: {
       plugins: [
         svg({ includePaths: [`./src/assets/`, 'src/other/'] }),
