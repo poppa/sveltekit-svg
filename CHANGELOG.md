@@ -5,6 +5,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.3.3] 2022-06-20
+
+No changes. Updated package dependencies and added to the README file.
+
 ## [0.3.2] 2022-04-11
 
 Thanks to [Miguel Camba](https://github.com/cibernox) for the contribution.
