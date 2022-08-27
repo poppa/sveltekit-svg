@@ -5,6 +5,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [1.0.0] 2022-07-27
+
+Lets go 1.0
+
+### Changed
+
+- Use `vite.config.js` instead of `svelte.config.js` in README.
+  _Thank you [Arad](https://github.com/aradalvand) for the PR_
+
 ## [0.3.4] 2022-06-20
 
 ### Changed
