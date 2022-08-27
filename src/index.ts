@@ -114,7 +114,7 @@ function readSvg(options: Options = { type: 'component' }) {
               : { data }
 
           if (isSvgoOptimizeError(opt)) {
-            console.error("Got optimize error from SVGO:", opt)
+            console.error('Got optimize error from SVGO:', opt)
             return undefined
           }
 
