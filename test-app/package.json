@@ -6,9 +6,11 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
+    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
+    "test": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.25.1",
     "@poppanator/sveltekit-svg": "^0.1.4",
     "@sveltejs/adapter-static": "^1.0.0-next.21",
     "@sveltejs/kit": "^1.0.0-next.405",
