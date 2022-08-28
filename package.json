@@ -15,7 +15,10 @@
   ],
   "scripts": {
     "dev": "tsc -w",
-    "build": "tsc"
+    "build": "tsc",
+    "pre-test": "npm link && cd test-app && npm run pre-test",
+    "test": "cd test-app && npm run test",
+    "test:all": "npm ci && npm run build && npm run pre-test && npm run test"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -55,16 +58,25 @@
   },
   "homepage": "https://github.com/poppa/sveltekit-svg#readme",
   "devDependencies": {
+    "@playwright/test": "^1.25.1",
+    "@sveltejs/adapter-static": "^1.0.0-next.21",
+    "@sveltejs/kit": "^1.0.0-next.405",
     "@types/node": "^15.0.1",
     "@types/svgo": "^2.3.0",
+    "cross-env": "^7.0.3",
     "prettier": "^2.2.1",
-    "svelte": "^3.37.0",
-    "typescript": "^4.2.4"
+    "svelte": "^3.49.0",
+    "svelte-check": "^2.8.1",
+    "svelte-preprocess": "^4.10.7",
+    "tslib": "^2.4.0",
+    "typescript": "^4.8.2",
+    "vite": "^3.0.9"
   },
   "dependencies": {
     "svgo": "^2.3.0"
   },
   "peerDependencies": {
-    "svelte": "3.x"
+    "svelte": "3.x",
+    "vite": "3.x"
   }
 }
