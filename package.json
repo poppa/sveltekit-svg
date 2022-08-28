@@ -24,6 +24,28 @@
     "name": "Pontus Östlund",
     "url": "https://github.com/poppa"
   },
+  "contributors": [
+    {
+      "name": "Jani",
+      "url": "https://github.com/ljani"
+    },
+    {
+      "name": "James Camilleri",
+      "url": "https://github.com/james-camilleri"
+    },
+    {
+      "name": "Roman Schmid",
+      "url": "https://github.com/bummzack"
+    },
+    {
+      "name": "Arad Alvand",
+      "url": "https://github.com/aradalvand"
+    },
+    {
+      "name": "Tobias Oetiker",
+      "url": "https://github.com/oetiker"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/poppa/sveltekit-svg"
