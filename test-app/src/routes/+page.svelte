@@ -7,19 +7,31 @@
 </script>
 
 <h2>As inline component</h2>
-<LogoSvgComponent />
+<div id="inline-comp">
+  <LogoSvgComponent />
+</div>
 
 <h2>As inline string</h2>
-{@html logoSvgString}
+<div id="inline-string">
+  {@html logoSvgString}
+</div>
 
 <h2>As URL in an image tag</h2>
-<img src={logoSvgUrl} alt="Sample logo" />
+<div id="image">
+  <img src={logoSvgUrl} alt="Sample logo" />
+</div>
 
 <h2>As Inline component from static folder</h2>
-<LogoSvgFromStatic />
+<div id="inline-from-static-folder">
+  <LogoSvgFromStatic />
+</div>
 
 <h2>With component props</h2>
-<LogoSvgComponent width="200" aria-hidden="false" />
+<div id="with-props">
+  <LogoSvgComponent width="200" aria-hidden="false" />
+</div>
 
 <h2>From another directory</h2>
-<LogoOtherSvgComponent width="200" />
+<id id="from-another-dir">
+  <LogoOtherSvgComponent width="200" />
+</id>
