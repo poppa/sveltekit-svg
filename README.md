@@ -13,18 +13,18 @@ components, inline SVG code or urls.
 In your `vite.config.js`
 
 ```js
-import { sveltekit } from '@sveltejs/kit/vite';
-import svg from '@poppanator/sveltekit-svg';
+import { sveltekit } from '@sveltejs/kit/vite'
+import svg from '@poppanator/sveltekit-svg'
 
 /** @type {import('vite').UserConfig} */
 const config = {
   plugins: [
     sveltekit(),
-    svg(options) // Options are optional
+    svg(options), // Options are optional
   ],
-};
+}
 
-export default config;
+export default config
 ```
 
 You can also pass multiple `svg` transformers based on paths if you want to
@@ -35,26 +35,28 @@ const config = {
   plugins: [
     sveltekit(),
     svg({
-      includePaths: ["./src/lib/icons/", "./src/assets/icons/"],
+      includePaths: ['./src/lib/icons/', './src/assets/icons/'],
       svgoOptions: {
         multipass: true,
-        plugins: [{
-          name: "preset-default",
-          // by default svgo removes the viewBox which prevents svg icons from scaling
-          // not a good idea! https://github.com/svg/svgo/pull/1461
-          params: { overrides: { removeViewBox: false } }
-        },
-        { name: "removeAttrs", params: { attrs: "(fill|stroke)" } }],
+        plugins: [
+          {
+            name: 'preset-default',
+            // by default svgo removes the viewBox which prevents svg icons from scaling
+            // not a good idea! https://github.com/svg/svgo/pull/1461
+            params: { overrides: { removeViewBox: false } },
+          },
+          { name: 'removeAttrs', params: { attrs: '(fill|stroke)' } },
+        ],
       },
     }),
     svg({
-      includePaths: ["./src/lib/graphics/"],
+      includePaths: ['./src/lib/graphics/'],
       svgoOptions: {
         multipass: true,
-        plugins: ["preset-default"],
+        plugins: ['preset-default'],
       },
     }),
-  ]
+  ],
 }
 ```
 
@@ -62,9 +64,22 @@ const config = {
 
 **Import as a Svelte component:**
 
+> **NOTE!** It's recommended that you use the `?component` query string if you
+> use the suggested type definition below. The reason is that **Vite** ships a
+> type definition for `*.svg` which states that `import Comp from './file.svg`
+> returns a string.
+>
+> So providing a default type definition for `*.svg` is in most cases causing
+> a conflict which will lead to TSC errors when treating such an import as a
+> Svelte component.
+>
+> So the best way to avoid errors, current and future, is to always use
+> `import Comp from './file.svg?component` with the suggested type definition
+> at the end of this file.
+
 ```svelte
 <script>
-import Logo from "./logo.svg";
+import Logo from "./logo.svg?component";
 </script>
 
 <Logo />
@@ -157,13 +172,8 @@ arbitrary file. It can be named whatever and reside wherever as long as
 your Typescript config recognize it)_
 
 ```ts
-declare module '*.svg' {
-  const content: any
-  export default content
-}
-
 declare module '*.svg?component' {
-  const content: any
+  const content: ConstructorOfATypedSvelteComponent
   export default content
 }
 

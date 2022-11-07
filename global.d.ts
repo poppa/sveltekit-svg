@@ -1,14 +1,12 @@
+/// <reference types="@sveltejs/kit" />
+
 declare module '*.svg' {
-  import { SvelteComponent } from 'svelte'
-  const content: SvelteComponent
-  // @ts-expect-error
-  // vite/client.d.ts defines this as "string"
+  const content: ConstructorOfATypedSvelteComponent
   export default content
 }
 
 declare module '*.svg?component' {
-  import { SvelteComponent } from 'svelte'
-  const content: SvelteComponent
+  const content: ConstructorOfATypedSvelteComponent
   export default content
 }
 

@@ -1,7 +1,9 @@
-import { optimize, type OptimizedError, type OptimizeOptions } from 'svgo'
-import { compile } from 'svelte/compiler'
 import { promises } from 'fs'
 import path from 'path'
+import { compile } from 'svelte/compiler'
+import { optimize, type OptimizedError, type OptimizeOptions } from 'svgo'
+import { Plugin } from 'vite'
+
 const { readFile } = promises
 
 interface Options {
@@ -50,13 +52,13 @@ function isSvgoOptimizeError(obj: unknown): obj is OptimizedError {
 
 // TODO: Remove this when Vite 2.7.0 is well-adopted.
 // https://github.com/vitejs/vite/blob/v2.7.1/packages/vite/CHANGELOG.md#270-2021-12-07
-function getSsrOption(transformOptions: boolean | { ssr: boolean }) {
+function getSsrOption(transformOptions: { ssr?: boolean } | undefined) {
   return typeof transformOptions === 'object'
     ? transformOptions.ssr
     : transformOptions
 }
 
-function readSvg(options: Options = { type: 'component' }) {
+function readSvg(options: Options = { type: 'component' }): Plugin {
   const resvg = /\.svg(?:\?(src|url|component))?$/
   const cache = new Map()
 
@@ -73,7 +75,7 @@ function readSvg(options: Options = { type: 'component' }) {
     async transform(
       source: string,
       id: string,
-      transformOptions: boolean | { ssr: boolean }
+      transformOptions?: { ssr?: boolean }
     ) {
       if (options.includePaths) {
         const isIncluded = options.includePaths.some((pattern) => {
