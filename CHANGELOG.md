@@ -198,5 +198,5 @@ Thanks to [Jani](https://github.com/ljani) for the contributions
 
 ---
 
-[unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v1.0.1...HEAD
-[1.0.1]: https://github.com/olivierlacan/keep-a-changelog/compare/v1.0.0...v1.0.1
+[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/poppa/sveltekit-svg/compare/v1.0.0...v1.0.1
