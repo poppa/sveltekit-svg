@@ -3,7 +3,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [Unreleased]
+
+## [1.0.1] 2022-11-07
+
+### Changed
+
+- Use the proper Vite `Plugin` type. The transform signature wasn't 100%
+  compatible with the `Plugin` interface and would cause errors when the
+  Vite config file is a Typescript file (e.g. `vite.config.ts`)
+
+- The suggested `*.svg?component` type definition now has a proper Svelte
+  typed component interface
+
+  ```ts
+  declare module '*.svg?component' {
+    const content: ConstructorOfATypedSvelteComponent
+    export default content
+  }
+  ```
 
 ## [1.0.0] 2022-07-27
 
@@ -177,3 +195,8 @@ Thanks to [Jani](https://github.com/ljani) for the contributions
 
 - Added changelog
 - Bump version to 0.1.0
+
+---
+
+[unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/olivierlacan/keep-a-changelog/compare/v1.0.0...v1.0.1
