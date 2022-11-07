@@ -5,10 +5,14 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
+    "package": "svelte-package",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
     "pre-test": "npm link @poppanator/sveltekit-svg",
     "test": "cross-env NODE_NO_WARNINGS=1 playwright test"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@sveltejs/package": "^1.0.0-next.5"
+  }
 }
