@@ -5,6 +5,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] 2022-11-17
+
+### Added
+
+- We now support generating inline data URLs (`data:image/svg+xml;base64,...`),
+  which can be used in `<img src>` attributes, by appending the querystring
+  variable `?dataurl` to an SVG import.
+
+  ```svelte
+  <script>
+  import icon1 from `$assets/icon1.svg?dataurl`
+  </script>
+
+  <img src={icon1} />
+  ```
+
+  `?dataurl` differs from `?url` in that SVGO optimization/transform will be
+  applied to the SVG before it's turned into a data URL.
+
 ## [1.0.1] 2022-11-07
 
 ### Changed
@@ -198,5 +217,6 @@ Thanks to [Jani](https://github.com/ljani) for the contributions
 
 ---
 
-[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v1.0.1...HEAD
+[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/poppa/sveltekit-svg/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/poppa/sveltekit-svg/compare/v1.0.0...v1.0.1
