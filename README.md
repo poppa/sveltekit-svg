@@ -101,6 +101,19 @@ import logoUrl from "./logo.svg?url";
 <img src={logoUrl} />
 ```
 
+**Import as data URL:**
+
+```svelte
+<script>
+import logoDataUrl from "./logo.svg?dataurl";
+</script>
+
+<img src={logoDataUrl} />
+```
+
+In contrast to `?url` this will apply SVGO optimization/transform before the
+the SVG is turned into a data URL
+
 **Import as code:**
 
 ```svelte
@@ -119,7 +132,7 @@ interface Options {
    * Output type
    * @default "component"
    */
-  type?: 'src' | 'url' | 'component'
+  type?: 'src' | 'url' | 'component' | 'dataurl'
   /**
    * Verbatim [SVGO](https://github.com/svg/svgo) options
    */
@@ -183,6 +196,11 @@ declare module '*.svg?src' {
 }
 
 declare module '*.svg?url' {
+  const content: string
+  export default content
+}
+
+declare module '*.svg?dataurl' {
   const content: string
   export default content
 }
