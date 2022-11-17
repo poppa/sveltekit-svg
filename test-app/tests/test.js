@@ -45,3 +45,9 @@ test('From another directory', async ({ page }) => {
   const svg = page.locator('#from-another-dir > svg')
   expect(await outerHtml(svg)).toMatchSnapshot('from-another-dir.svg')
 })
+
+test('As data URL', async ({ page }) => {
+  await page.goto('/')
+  const img = page.locator('#dataurl > img')
+  expect(await img.getAttribute('src')).toMatchSnapshot('base64imageurl.txt')
+})

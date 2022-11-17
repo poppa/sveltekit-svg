@@ -2,8 +2,11 @@
   import LogoSvgComponent from '../assets/sample-logo.svg?component'
   import logoSvgString from '../assets/sample-logo.svg?src'
   import logoSvgUrl from '../assets/sample-logo.svg?url'
+  import logoSvgDataUrl from '../assets/sample-logo.svg?dataurl'
   import LogoOtherSvgComponent from '../other/other-logo.svg?component'
   import LogoSvgFromStatic from '../../static/static-sample-logo.svg?component'
+
+  console.log(`DATA URL:`, logoSvgDataUrl)
 </script>
 
 <h2>As inline component</h2>
@@ -34,4 +37,14 @@
 <h2>From another directory</h2>
 <id id="from-another-dir">
   <LogoOtherSvgComponent width="200" />
+</id>
+
+<h2>Data-URL</h2>
+<id id="dataurl">
+  <img
+    src={logoSvgDataUrl}
+    alt="Sample logo as data URL"
+    width="140"
+    height="140"
+  />
 </id>
