@@ -11,7 +11,7 @@ interface Options {
    * Output type
    * @default "component"
    */
-  type?: 'src' | 'url' | 'component'
+  type?: 'src' | 'url' | 'component' | 'dataurl'
   /**
    * Verbatim [SVGO](https://github.com/svg/svgo) options
    */
@@ -59,7 +59,7 @@ function getSsrOption(transformOptions: { ssr?: boolean } | undefined) {
 }
 
 function readSvg(options: Options = { type: 'component' }): Plugin {
-  const resvg = /\.svg(?:\?(src|url|component))?$/
+  const resvg = /\.svg(?:\?(src|url|component|dataurl))?$/
   const cache = new Map()
 
   if (options.includePaths) {
@@ -68,6 +68,10 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
       const filepath = path.resolve(path.normalize(pattern))
       return path.sep === '\\' ? filepath.replace(/\\/g, '/') : filepath
     })
+  }
+
+  const isType = (str: string | undefined, type: Options['type']): boolean => {
+    return (!str && options.type === type) || str === type
   }
 
   return {
@@ -93,7 +97,7 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
       if (match) {
         const type = match[1]
 
-        if (type === 'url' || (!type && options.type === 'url')) {
+        if (isType(type, 'url')) {
           return source
         }
 
@@ -120,8 +124,12 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
             return undefined
           }
 
-          if (type === 'src' || (!type && options.type === 'src')) {
+          if (isType(type, 'src')) {
             data = `\nexport default \`${opt.data}\`;`
+          } else if (isType(type, 'dataurl')) {
+            const head = `data:image/svg+xml;base64,`
+            const dataurl = Buffer.from(opt.data).toString('base64url')
+            data = `\nexport default \`${head}${dataurl}\`;`
           } else {
             opt.data = addComponentProps(opt.data)
             const { js } = compile(opt.data, {
