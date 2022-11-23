@@ -7,10 +7,11 @@
     "sveltekit-plugin",
     "svg",
     "svgo",
-    "svelte"
+    "svelte",
+    "sveltekit"
   ],
   "files": [
-    "global.d.ts",
+    "app.d.ts",
     "dist"
   ],
   "scripts": {
