@@ -60,24 +60,25 @@
   "homepage": "https://github.com/poppa/sveltekit-svg#readme",
   "devDependencies": {
     "@playwright/test": "^1.25.1",
-    "@sveltejs/adapter-static": "^1.0.0-next.21",
-    "@sveltejs/kit": "^1.0.0-next.405",
+    "@sveltejs/adapter-node": "^1.0.0-next.104",
+    "@sveltejs/adapter-static": "^1.0.0-next.49",
+    "@sveltejs/kit": "^1.0.0-next.584",
     "@types/node": "^15.0.1",
     "@types/svgo": "^2.3.0",
     "cross-env": "^7.0.3",
     "prettier": "^2.2.1",
-    "svelte": "^3.49.0",
-    "svelte-check": "^2.8.1",
+    "svelte": "^3.54.0",
+    "svelte-check": "^2.10.2",
     "svelte-preprocess": "^4.10.7",
     "tslib": "^2.4.0",
     "typescript": "^4.8.2",
-    "vite": "^3.0.9"
+    "vite": "^4.0.0"
   },
   "dependencies": {
     "svgo": "^2.3.0"
   },
   "peerDependencies": {
     "svelte": "3.x",
-    "vite": "3.x"
+    "vite": ">=3.x"
   }
 }

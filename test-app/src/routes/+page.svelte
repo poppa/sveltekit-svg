@@ -5,8 +5,6 @@
   import logoSvgDataUrl from '../assets/sample-logo.svg?dataurl'
   import LogoOtherSvgComponent from '../other/other-logo.svg?component'
   import LogoSvgFromStatic from '../../static/static-sample-logo.svg?component'
-
-  console.log(`DATA URL:`, logoSvgDataUrl)
 </script>
 
 <h2>As inline component</h2>
