@@ -184,7 +184,13 @@ following to your application's `app.d.ts`.
 
 ```ts
 declare module '*.svg?component' {
-  const content: ConstructorOfATypedSvelteComponent
+  import type { ComponentType, SvelteComponentTyped } from 'svelte'
+  import type { SVGAttributes } from 'svelte/elements'
+
+  const content: ComponentType<
+    SvelteComponentTyped<SVGAttributes<SVGSVGElement>>
+  >
+
   export default content
 }
 
