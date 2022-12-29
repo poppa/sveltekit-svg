@@ -5,6 +5,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] 2022-12-12
+
+### Fixed
+
+- Proper type in sample `.d.ts` for component. This will get proper intellisense
+  for all valid SVG attributes. Thank to [YummYume](https://github.com/YummYume)
+  for the example code.
+
+- Upgraded all NPM packages
+
+## [2.0.0] 2022-12-12
+
+### Fixed
+
+- Updated to work with Vite 4.0 and latest SvelteKit
+
 ## [1.1.0] 2022-11-17
 
 ### Added
@@ -217,6 +233,8 @@ Thanks to [Jani](https://github.com/ljani) for the contributions
 
 ---
 
-[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v1.1.0...HEAD
+[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/poppa/sveltekit-svg/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/poppa/sveltekit-svg/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/poppa/sveltekit-svg/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/poppa/sveltekit-svg/compare/v1.0.0...v1.0.1
