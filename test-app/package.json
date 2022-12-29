@@ -13,7 +13,7 @@
   },
   "type": "module",
   "devDependencies": {
-    "@sveltejs/kit": "^1.0.0-next.584",
-    "@sveltejs/package": "^1.0.0-next.1"
+    "@sveltejs/kit": "^1.0.1",
+    "@sveltejs/package": "^1.0.1"
   }
 }
