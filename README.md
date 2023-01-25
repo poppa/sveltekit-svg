@@ -3,6 +3,9 @@
 This plugin makes it possible to import SVG files as Svelte
 components, inline SVG code or urls.
 
+_NOTE! This plugin isn't just for SvelteKit, but works for any Svelte
+project using Vite_
+
 ## Install
 
 - `yarn add --dev @poppanator/sveltekit-svg`

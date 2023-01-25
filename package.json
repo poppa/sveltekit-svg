@@ -8,7 +8,9 @@
     "svg",
     "svgo",
     "svelte",
-    "sveltekit"
+    "sveltekit",
+    "vite",
+    "vite-plugin"
   ],
   "files": [
     "app.d.ts",
