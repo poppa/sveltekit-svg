@@ -92,72 +92,74 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
       }
 
       const match = id.match(resvg)
-      const isBuild = getSsrOption(transformOptions)
 
-      if (match) {
-        const type = match[1]
-
-        if (isType(type, 'url')) {
-          return source
-        }
-
-        try {
-          const cacheKey = `${id}:${isBuild}`
-          const cached = cache.get(cacheKey)
-
-          if (cached) {
-            return cached
-          }
-
-          const filename = id.replace(/\.svg(\?.*)$/, '.svg')
-          let data = (await readFile(filename)).toString('utf-8')
-          const opt =
-            options.svgoOptions !== false
-              ? optimize(data, {
-                  path: filename,
-                  ...(options.svgoOptions || {}),
-                })
-              : { data }
-
-          if (isSvgoOptimizeError(opt)) {
-            console.error('Got optimize error from SVGO:', opt)
-            return undefined
-          }
-
-          if (isType(type, 'src')) {
-            data = `\nexport default \`${opt.data}\`;`
-          } else if (isType(type, 'dataurl')) {
-            const head = `data:image/svg+xml;base64,`
-            const dataurl = Buffer.from(opt.data).toString('base64url')
-            data = `\nexport default \`${head}${dataurl}\`;`
-          } else {
-            opt.data = addComponentProps(opt.data)
-            const { js } = compile(opt.data, {
-              css: false,
-              filename: id,
-              hydratable: true,
-              namespace: 'svg',
-              generate: isBuild ? 'ssr' : 'dom',
-            })
-
-            delete js.map
-            data = js
-          }
-
-          cache.set(cacheKey, data)
-
-          return data
-        } catch (err: unknown) {
-          console.error(
-            'Failed reading SVG "%s": %s',
-            id,
-            (err as Error).message,
-            err
-          )
-        }
+      if (!match!) {
+        return undefined
       }
 
-      return undefined
+      const isBuild = getSsrOption(transformOptions)
+      const type = match[1]
+
+      if (isType(type, 'url')) {
+        return source
+      }
+
+      try {
+        const cacheKey = `${id}:${isBuild}`
+        const cached = cache.get(cacheKey)
+
+        if (cached) {
+          return cached
+        }
+
+        const filename = id.replace(/\.svg(\?.*)$/, '.svg')
+        let data = (await readFile(filename)).toString('utf-8')
+        const opt =
+          options.svgoOptions !== false
+            ? optimize(data, {
+                path: filename,
+                ...(options.svgoOptions || {}),
+              })
+            : { data }
+
+        if (isSvgoOptimizeError(opt)) {
+          console.error('Got optimize error from SVGO:', opt)
+          return undefined
+        }
+
+        if (isType(type, 'src')) {
+          data = `\nexport default \`${opt.data}\`;`
+        } else if (isType(type, 'dataurl')) {
+          const head = `data:image/svg+xml;base64,`
+          const dataurl = Buffer.from(opt.data).toString('base64url')
+          data = `\nexport default \`${head}${dataurl}\`;`
+        } else {
+          opt.data = addComponentProps(opt.data)
+          const { js } = compile(opt.data, {
+            css: false,
+            filename: id,
+            hydratable: true,
+            namespace: 'svg',
+            generate: isBuild ? 'ssr' : 'dom',
+          })
+
+          delete js.map
+          data = js
+        }
+
+        cache.set(cacheKey, data)
+
+        return data
+      } catch (err: unknown) {
+        console.error(
+          'Failed reading SVG "%s": %s',
+          id,
+          (err as Error).message,
+          err
+        )
+
+        return undefined
+      }
     },
   }
 }
