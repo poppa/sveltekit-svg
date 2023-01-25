@@ -60,7 +60,6 @@ function getSsrOption(transformOptions: { ssr?: boolean } | undefined) {
 
 function readSvg(options: Options = { type: 'component' }): Plugin {
   const resvg = /\.svg(?:\?(src|url|component|dataurl))?$/
-  const cache = new Map()
 
   if (options.includePaths) {
     // Normalize the include paths prefixes ahead of time
@@ -105,13 +104,6 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
       }
 
       try {
-        const cacheKey = `${id}:${isBuild}`
-        const cached = cache.get(cacheKey)
-
-        if (cached) {
-          return cached
-        }
-
         const filename = id.replace(/\.svg(\?.*)$/, '.svg')
         let data = (await readFile(filename)).toString('utf-8')
         const opt =
@@ -146,8 +138,6 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
           delete js.map
           data = js
         }
-
-        cache.set(cacheKey, data)
 
         return data
       } catch (err: unknown) {
