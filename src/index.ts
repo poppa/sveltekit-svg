@@ -135,7 +135,6 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
             generate: isBuild ? 'ssr' : 'dom',
           })
 
-          delete js.map
           data = js
         }
 
