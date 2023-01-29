@@ -5,6 +5,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.2] 2023-01-29
+
+### Fixed
+
+- Keep the generated source map
+
+  This removes the "Sourcemap is likely to be incorrect: a plugi
+  (sveltekit-svg) was used to transform files..." warning seen when using this
+  plugin outside of SvelteKit
+
 ## [2.1.1] 2023-01-25
 
 ### Fixed
@@ -243,8 +253,9 @@ Thanks to [Jani](https://github.com/ljani) for the contributions
 
 ---
 
-[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v2.1.1...HEAD
-[2.2.1]: https://github.com/poppa/sveltekit-svg/compare/v2.0.2...v2.1.1
+[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v2.1.2...HEAD
+[2.1.2]: https://github.com/poppa/sveltekit-svg/compare/v2.1.1...v2.1.2
+[2.1.1]: https://github.com/poppa/sveltekit-svg/compare/v2.0.2...v2.1.1
 [2.0.2]: https://github.com/poppa/sveltekit-svg/compare/v2.0.0...v2.0.2
 [2.0.0]: https://github.com/poppa/sveltekit-svg/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/poppa/sveltekit-svg/compare/v1.0.1...v1.1.0
