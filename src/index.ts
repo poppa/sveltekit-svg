@@ -2,7 +2,7 @@ import { promises } from 'fs'
 import path from 'path'
 import { compile } from 'svelte/compiler'
 import { optimize, type OptimizedError, type OptimizeOptions } from 'svgo'
-import { Plugin } from 'vite'
+import type { Plugin } from 'vite'
 
 const { readFile } = promises
 
