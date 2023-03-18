@@ -5,6 +5,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0] 2023-03-18
+
+### Added
+
+- Support for the SVGO datauri option in the `dataurl` query parameter.
+  This means that `?dataurl=base64`, `?dataurl=enc` and `?dataurl=unenc` works
+
+### Changed
+
+- Upgraded all NPM packages and bumped the SVGO dependency ro SVGO >=3.0
+
 ## [2.1.2] 2023-01-29
 
 ### Fixed
@@ -253,7 +264,8 @@ Thanks to [Jani](https://github.com/ljani) for the contributions
 
 ---
 
-[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v2.1.2...HEAD
+[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/poppa/sveltekit-svg/compare/v2.1.2...v3.0.0
 [2.1.2]: https://github.com/poppa/sveltekit-svg/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/poppa/sveltekit-svg/compare/v2.0.2...v2.1.1
 [2.0.2]: https://github.com/poppa/sveltekit-svg/compare/v2.0.0...v2.0.2
