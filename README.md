@@ -117,6 +117,17 @@ import logoDataUrl from "./logo.svg?dataurl";
 In contrast to `?url` this will apply SVGO optimization/transform before the
 the SVG is turned into a data URL
 
+You can also pass the SVGO config option `datauri` as value to `?dataurl`.
+This will, for instance, generate an URI encoded string
+
+```svelte
+<script>
+import logoDataUrl from "./logo.svg?dataurl=enc";
+</script>
+
+<img src={logoDataUrl} />
+```
+
 **Import as code:**
 
 ```svelte
@@ -134,6 +145,13 @@ interface Options {
   /**
    * Output type
    * @default "component"
+   *
+   * `dataurl` can also take the following options, which are verbatim SVGO
+   * `datauri` options:
+   *
+   * - `?dataurl=base64` (default, same as `?dataurl`)
+   * - `?dataurl=enc` URL encoded string
+   * - `?datarl=unenc` Plain SVG
    */
   type?: 'src' | 'url' | 'component' | 'dataurl'
   /**

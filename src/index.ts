@@ -1,7 +1,7 @@
 import { promises } from 'fs'
 import path from 'path'
 import { compile } from 'svelte/compiler'
-import { optimize, type OptimizedError, type OptimizeOptions } from 'svgo'
+import { optimize, type Config } from 'svgo'
 import type { Plugin } from 'vite'
 
 const { readFile } = promises
@@ -9,13 +9,21 @@ const { readFile } = promises
 interface Options {
   /**
    * Output type
+   *
+   * `dataurl` can also take the following options, which are verbatim SVGO
+   * `datauri` options:
+   *
+   * - `?dataurl=base64` (default, same as `?dataurl`)
+   * - `?dataurl=enc` URL encoded string
+   * - `?dataurl=unenc` Plain SVG
+   *
    * @default "component"
    */
   type?: 'src' | 'url' | 'component' | 'dataurl'
   /**
    * Verbatim [SVGO](https://github.com/svg/svgo) options
    */
-  svgoOptions?: OptimizeOptions | false
+  svgoOptions?: Config | false
   /**
    * Paths to apply the SVG plugin on. This can be useful if you want to apply
    * different SVGO options/plugins on different SVGs.
@@ -46,20 +54,12 @@ function addComponentProps(data: string): string {
   return `${head} {...$$props}${body}`
 }
 
-function isSvgoOptimizeError(obj: unknown): obj is OptimizedError {
+function isSvgoOptimizeError(obj: unknown): obj is Error {
   return typeof obj === 'object' && obj !== null && !('data' in obj)
 }
 
-// TODO: Remove this when Vite 2.7.0 is well-adopted.
-// https://github.com/vitejs/vite/blob/v2.7.1/packages/vite/CHANGELOG.md#270-2021-12-07
-function getSsrOption(transformOptions: { ssr?: boolean } | undefined) {
-  return typeof transformOptions === 'object'
-    ? transformOptions.ssr
-    : transformOptions
-}
-
 function readSvg(options: Options = { type: 'component' }): Plugin {
-  const resvg = /\.svg(?:\?(src|url|component|dataurl))?$/
+  const resvg = /\.svg(?:\?(src|url|component|dataurl)(=(base64|(un)?enc))?)?$/
 
   if (options.includePaths) {
     // Normalize the include paths prefixes ahead of time
@@ -92,25 +92,50 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
 
       const match = id.match(resvg)
 
-      if (!match!) {
+      if (!match) {
         return undefined
       }
 
-      const isBuild = getSsrOption(transformOptions)
+      const isBuild = transformOptions?.ssr ?? false
       const type = match[1]
 
       if (isType(type, 'url')) {
         return source
       }
 
+      let svgo = options.svgoOptions
+      let isSvgoDataUri = false
+
+      if (svgo && typeof svgo === 'object') {
+        if (svgo.datauri) {
+          isSvgoDataUri = true
+        }
+      }
+
+      if (isSvgoDataUri && type === 'component') {
+        console.warn(
+          `[WARNING]: Type "${id}" can not be imported as a Svelte component ` +
+            `since "datauri" is set in vite.config`
+        )
+      } else if (type === 'dataurl') {
+        const t = match[3] ?? 'base64'
+
+        if (!svgo) {
+          svgo = {}
+        }
+
+        svgo.datauri = t as Config['datauri']
+        isSvgoDataUri = true
+      }
+
       try {
         const filename = id.replace(/\.svg(\?.*)$/, '.svg')
         let data = (await readFile(filename)).toString('utf-8')
         const opt =
-          options.svgoOptions !== false
+          svgo !== false
             ? optimize(data, {
                 path: filename,
-                ...(options.svgoOptions || {}),
+                ...(svgo || {}),
               })
             : { data }
 
@@ -119,18 +144,14 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
           return undefined
         }
 
-        if (isType(type, 'src')) {
+        if (isType(type, 'src') || isSvgoDataUri) {
           data = `\nexport default \`${opt.data}\`;`
-        } else if (isType(type, 'dataurl')) {
-          const head = `data:image/svg+xml;base64,`
-          const dataurl = Buffer.from(opt.data).toString('base64url')
-          data = `\nexport default \`${head}${dataurl}\`;`
         } else {
           opt.data = addComponentProps(opt.data)
           const { js } = compile(opt.data, {
             css: false,
             filename: id,
-            hydratable: true,
+            hydratable: !isBuild,
             namespace: 'svg',
             generate: isBuild ? 'ssr' : 'dom',
           })

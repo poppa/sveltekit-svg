@@ -13,7 +13,9 @@
   },
   "type": "module",
   "devDependencies": {
-    "@sveltejs/kit": "^1.0.1",
-    "@sveltejs/package": "^1.0.1"
+    "@sveltejs/kit": "^1.12.0",
+    "@sveltejs/package": "^1.0.2",
+    "svgo": "^3.0.2",
+    "vite": "^4.2.0"
   }
 }

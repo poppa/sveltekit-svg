@@ -51,3 +51,21 @@ test('As data URL', async ({ page }) => {
   const img = page.locator('#dataurl > img')
   expect(await img.getAttribute('src')).toMatchSnapshot('base64imageurl.txt')
 })
+
+test('As data URL with explicit base64', async ({ page }) => {
+  await page.goto('/dataurl')
+  const img = page.locator('#b64e > img')
+  expect(await img.getAttribute('src')).toMatchSnapshot('base64explicit.txt')
+})
+
+test('As data URL with explicit enc', async ({ page }) => {
+  await page.goto('/dataurl')
+  const img = page.locator('#enc > img')
+  expect(await img.getAttribute('src')).toMatchSnapshot('enc.txt')
+})
+
+test('As data URL with explicit unenc', async ({ page }) => {
+  await page.goto('/dataurl')
+  const img = page.locator('#unenc > img')
+  expect(await img.getAttribute('src')).toMatchSnapshot('unenc.txt')
+})
