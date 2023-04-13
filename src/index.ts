@@ -41,7 +41,33 @@ interface Options {
   includePaths?: string[]
 }
 
+type Position = {
+  line: number
+  column: number
+  character: number
+}
+
+type CompileError = Error & {
+  code: string
+  pos: number
+  filename: string
+  frame: string
+  start: Position
+  end: Position
+}
+
+function isCompileError(err: unknown): err is CompileError {
+  return err instanceof Error && 'code' in err && 'frame' in err
+}
+
 const svgRegex = /(<svg.*?)(>.*)/s
+
+function color(start: string, end = '\u001b[0m'): (text: string) => string {
+  return (text: string) => `${start}${text}${end}`
+}
+
+const yellow = color('\u001b[33m')
+const blue = color('\u001b[34m')
 
 function addComponentProps(data: string): string {
   const parts = svgRegex.exec(data)
@@ -56,6 +82,10 @@ function addComponentProps(data: string): string {
 
 function isSvgoOptimizeError(obj: unknown): obj is Error {
   return typeof obj === 'object' && obj !== null && !('data' in obj)
+}
+
+function hasCdata(code: string): boolean {
+  return code.includes('<![CDATA[')
 }
 
 function readSvg(options: Options = { type: 'component' }): Plugin {
@@ -114,8 +144,10 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
 
       if (isSvgoDataUri && type === 'component') {
         console.warn(
-          `[WARNING]: Type "${id}" can not be imported as a Svelte component ` +
-            `since "datauri" is set in vite.config`
+          `%s Type %O can not be imported as a Svelte component ` +
+            `since "datauri" is set in vite.config`,
+          yellow('[WARNING]'),
+          id
         )
       } else if (type === 'dataurl') {
         const t = match[3] ?? 'base64'
@@ -161,12 +193,28 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
 
         return data
       } catch (err: unknown) {
-        console.error(
-          'Failed reading SVG "%s": %s',
-          id,
-          (err as Error).message,
-          err
-        )
+        if (isCompileError(err) && hasCdata(err.frame)) {
+          const msg =
+            `\n%s The SVG file %O contains a %s section which is not ` +
+            `supported by Svelte. To make this SVG work with the %s ` +
+            `plugin, you need to remove all %s sections from the SVG.\n`
+
+          console.warn(
+            msg,
+            yellow('[WARNING]'),
+            id,
+            blue('<![CDATA[...]]>'),
+            blue('@poppanator/sveltekit-svg'),
+            blue('<![CDATA[...]]>')
+          )
+        } else {
+          console.error(
+            'Failed reading SVG "%s": %s',
+            id,
+            (err as Error).message,
+            err
+          )
+        }
 
         return undefined
       }
