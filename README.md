@@ -151,7 +151,7 @@ interface Options {
    *
    * - `?dataurl=base64` (default, same as `?dataurl`)
    * - `?dataurl=enc` URL encoded string
-   * - `?datarl=unenc` Plain SVG
+   * - `?dataurl=unenc` Plain SVG
    */
   type?: 'src' | 'url' | 'component' | 'dataurl'
   /**
