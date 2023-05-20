@@ -13,7 +13,7 @@
     "vite-plugin"
   ],
   "files": [
-    "app.d.ts",
+    "svg.d.ts",
     "dist"
   ],
   "scripts": {
