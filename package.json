@@ -1,7 +1,7 @@
 {
   "name": "@poppanator/sveltekit-svg",
   "version": "3.0.0",
-  "description": "Import SVG files as Svelte components in SvelteKit",
+  "description": "Import SVG files as Svelte components",
   "private": false,
   "keywords": [
     "sveltekit-plugin",
@@ -13,12 +13,11 @@
     "vite-plugin"
   ],
   "files": [
-    "svg.d.ts",
     "dist"
   ],
   "scripts": {
     "dev": "tsc -w",
-    "build": "tsc",
+    "build": "tsc && cp svg.d.ts dist/",
     "pre-test": "npm link && cd test-app && npm run pre-test",
     "test": "cd test-app && npm run test",
     "test:all": "npm ci && npm run build && npm run pre-test && npm run test"
