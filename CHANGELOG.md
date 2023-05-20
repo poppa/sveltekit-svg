@@ -5,6 +5,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.1] 2023-05-20
+
+### Changed
+
+This is a maintenance release with no code changes
+
+- Updated all NPM packages
+- Renamed `app.d.ts` to `svg.d.ts` since Svelte doesn't like these typings in
+  `app.d.ts` (see [issue 25](https://github.com/poppa/sveltekit-svg/issues/25))
+- Also copy `svg.d.ts` to `dist/` on build.
+- Some fixes to the README file
+- Thanks to @joakimnordling for PR #35
+
 ## [3.0.0] 2023-03-18
 
 ### Added
@@ -264,7 +277,8 @@ Thanks to [Jani](https://github.com/ljani) for the contributions
 
 ---
 
-[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v3.0.0...HEAD
+[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v3.0.1...HEAD
+[3.0.1]: https://github.com/poppa/sveltekit-svg/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/poppa/sveltekit-svg/compare/v2.1.2...v3.0.0
 [2.1.2]: https://github.com/poppa/sveltekit-svg/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/poppa/sveltekit-svg/compare/v2.0.2...v2.1.1
