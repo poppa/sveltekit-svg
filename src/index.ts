@@ -188,7 +188,7 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
             generate: isBuild ? 'ssr' : 'dom',
           })
 
-          data = js
+          data = js.code
         }
 
         return data
