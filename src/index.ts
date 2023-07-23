@@ -77,7 +77,10 @@ function addComponentProps(data: string): string {
   }
 
   const [, attributes, content] = parts
-  const contentEscaped = content?.replace(/\${/g, '\\${')
+  const contentEscaped = content
+    ?.replace(/\\/g, '\\\\') // escape backslashes (\)
+    .replace(/`/g, '\\`') // escape backticks (`)
+    .replace(/\${/g, '\\${') // escape ${
   return `<svg ${attributes} {...$$props}>{@html \`${contentEscaped}\`}</svg>`
 }
 
