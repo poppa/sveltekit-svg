@@ -201,17 +201,15 @@ where `src/lib/EmptyIcon.svelte` can contain just `<svg />`.
 ## Typescript
 
 For Typescript not to complain about `file.svg?component` et.al, add the
-following to something like `svg.d.ts` (somewhere in the path of your project where 
+following to something like `svg.d.ts` (somewhere in the path of your project where
 `tsc` can find it).
 
 ```ts
 declare module '*.svg?component' {
-  import type { ComponentType, SvelteComponentTyped } from 'svelte'
+  import type { ComponentType, SvelteComponent } from 'svelte'
   import type { SVGAttributes } from 'svelte/elements'
 
-  const content: ComponentType<
-    SvelteComponentTyped<SVGAttributes<SVGSVGElement>>
-  >
+  const content: ComponentType<SvelteComponent<SVGAttributes<SVGSVGElement>>>
 
   export default content
 }

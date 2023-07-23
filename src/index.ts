@@ -60,7 +60,7 @@ function isCompileError(err: unknown): err is CompileError {
   return err instanceof Error && 'code' in err && 'frame' in err
 }
 
-const svgRegex = /(<svg.*?)(>.*)/s
+const svgRegex = /<svg(.*?)>(.*?)<\/svg>/s
 
 function color(start: string, end = '\u001b[0m'): (text: string) => string {
   return (text: string) => `${start}${text}${end}`
@@ -76,8 +76,9 @@ function addComponentProps(data: string): string {
     throw new Error('Invalid SVG')
   }
 
-  const [, head, body] = parts
-  return `${head} {...$$props}${body}`
+  const [, attributes, content] = parts
+  const contentEscaped = content?.replace(/\${/g, '\\${')
+  return `<svg ${attributes} {...$$props}>{@html \`${contentEscaped}\`}</svg>`
 }
 
 function isSvgoOptimizeError(obj: unknown): obj is Error {
