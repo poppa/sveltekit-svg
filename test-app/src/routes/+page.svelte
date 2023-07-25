@@ -1,4 +1,6 @@
 <script lang="ts">
+  import LogoSvgAdvancedComponentWithTitle from '../advanced/sample-logo.svg?component'
+  import LogoSvgAdvancedComponentNoTitle from '../advanced/sample-logo-no-title.svg?component'
   import LogoSvgComponent from '../assets/sample-logo.svg?component'
   import logoSvgString from '../assets/sample-logo.svg?src'
   import logoSvgUrl from '../assets/sample-logo.svg?url'
@@ -10,6 +12,21 @@
 <h2>As inline component</h2>
 <div id="inline-comp">
   <LogoSvgComponent />
+</div>
+
+<h2>As advanced component component (with title already)</h2>
+<div id="inline-advanced-comp-title">
+  <LogoSvgAdvancedComponentWithTitle title="Advanced component" />
+</div>
+
+<h2>As advanced component component (with title already no props)</h2>
+<div id="inline-advanced-comp-title-no-props">
+  <LogoSvgAdvancedComponentWithTitle />
+</div>
+
+<h2>As advanced component component (without title)</h2>
+<div id="inline-advanced-comp-notitle">
+  <LogoSvgAdvancedComponentNoTitle title="Advanced component" />
 </div>
 
 <h2>As inline string</h2>

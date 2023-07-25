@@ -39,6 +39,13 @@ interface Options {
    * ```
    */
   includePaths?: string[]
+  /**
+   * This hook allows you to modify the resulting svg component
+   * to include props, lifercycle events etc.
+   * @param component the stringified version of the component
+   * @returns an updated version of the stringified component
+   */
+  transformComponent?: (component: string) => string
 }
 
 type Position = {
@@ -69,17 +76,6 @@ function color(start: string, end = '\u001b[0m'): (text: string) => string {
 const yellow = color('\u001b[33m')
 const blue = color('\u001b[34m')
 
-function addComponentProps(data: string): string {
-  const parts = svgRegex.exec(data)
-
-  if (!parts) {
-    throw new Error('Invalid SVG')
-  }
-
-  const [, head, body] = parts
-  return `${head} {...$$props}${body}`
-}
-
 function isSvgoOptimizeError(obj: unknown): obj is Error {
   return typeof obj === 'object' && obj !== null && !('data' in obj)
 }
@@ -101,6 +97,20 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
 
   const isType = (str: string | undefined, type: Options['type']): boolean => {
     return (!str && options.type === type) || str === type
+  }
+
+  function addComponentProps(data: string): string {
+    const parts = svgRegex.exec(data)
+    if (!parts) {
+      throw new Error('Invalid SVG fuck')
+    }
+
+    const [, head, body] = parts
+    let retval = `${head} {...$$restProps}${body}`
+    if (options.transformComponent) {
+      retval = options.transformComponent(data)
+    }
+    return retval
   }
 
   return {
@@ -133,7 +143,10 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
         return source
       }
 
-      let svgo = options.svgoOptions
+      let svgo =
+        typeof options.svgoOptions === 'object'
+          ? { ...options.svgoOptions }
+          : options.svgoOptions
       let isSvgoDataUri = false
 
       if (svgo && typeof svgo === 'object') {
