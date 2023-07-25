@@ -173,8 +173,32 @@ interface Options {
    * ```
    */
   includePaths?: string[]
+  /**
+   * This hook allows you to modify the resulting svg component
+   * to include props, lifercycle events etc.
+   * @param component the stringified version of the component
+   * @returns an updated version of the stringified component
+   */
+  transformComponent?: (component: string) => string
 }
 ````
+
+## Transform the component
+
+The `transformComponent` hook it's a way to have smarter components imported when you import the svg as a component. For example you might want to accept a title prop that actually add a dynamic `<title></title>` element inside the svg. The way it works is that you get the stringified svg as input and you must return a stringified svelte component as output. Here's an example of the function where every is imported with a h1 with the title if the props is passed in.
+
+```ts
+transformComponent(svg) {
+	const updatedComponent = `<script>
+export let title='';
+</script>
+{#if title}
+	<h1>{title}</h1>
+{/if}
+${data}`
+	return updatedComponent
+},
+```
 
 ## Notes on using with _Jest_
 
