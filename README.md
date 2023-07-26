@@ -195,7 +195,7 @@ export let title='';
 {#if title}
 	<h1>{title}</h1>
 {/if}
-${data}`
+${svg}`
 	return updatedComponent
 },
 ```
