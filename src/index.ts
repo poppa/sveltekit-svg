@@ -67,7 +67,7 @@ function isCompileError(err: unknown): err is CompileError {
   return err instanceof Error && 'code' in err && 'frame' in err
 }
 
-const svgRegex = /(<svg.*?)(>.*)/s
+const svgRegex = /<svg(.*?)>(.*)<\/svg>/s
 
 function color(start: string, end = '\u001b[0m'): (text: string) => string {
   return (text: string) => `${start}${text}${end}`
@@ -75,6 +75,18 @@ function color(start: string, end = '\u001b[0m'): (text: string) => string {
 
 const yellow = color('\u001b[33m')
 const blue = color('\u001b[34m')
+
+function toComponent(svg: string): string {
+  const parts = svgRegex.exec(svg)
+
+  if (!parts) {
+    throw new Error('Invalid SVG')
+  }
+
+  const [, attributes, content] = parts
+  const contentStrLiteral = JSON.stringify(content) // JSON.stringify escapes any characters that need to be escaped and surrounds `content` with double quotes
+  return `<svg ${attributes} {...$$props}>{@html ${contentStrLiteral}}</svg>`
+}
 
 function isSvgoOptimizeError(obj: unknown): obj is Error {
   return typeof obj === 'object' && obj !== null && !('data' in obj)
@@ -192,7 +204,7 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
         if (isType(type, 'src') || isSvgoDataUri) {
           data = `\nexport default \`${opt.data}\`;`
         } else {
-          opt.data = addComponentProps(opt.data)
+          opt.data = toComponent(opt.data)
           const { js } = compile(opt.data, {
             css: false,
             filename: id,
