@@ -77,7 +77,9 @@ function toComponent(svg: string): string {
   }
 
   const [, attributes, content] = parts
-  const contentStrLiteral = JSON.stringify(content) // JSON.stringify escapes any characters that need to be escaped and surrounds `content` with double quotes
+  // JSON.stringify escapes any characters that need to be escaped and
+  // surrounds `content` with double quotes
+  const contentStrLiteral = JSON.stringify(content)
   return `<svg ${attributes} {...$$props}>{@html ${contentStrLiteral}}</svg>`
 }
 
