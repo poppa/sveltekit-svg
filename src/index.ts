@@ -39,13 +39,6 @@ interface Options {
    * ```
    */
   includePaths?: string[]
-  /**
-   * This hook allows you to modify the resulting svg component
-   * to include props, lifercycle events etc.
-   * @param component the stringified version of the component
-   * @returns an updated version of the stringified component
-   */
-  transformComponent?: (component: string) => string
 }
 
 type Position = {
@@ -111,20 +104,6 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
     return (!str && options.type === type) || str === type
   }
 
-  function addComponentProps(data: string): string {
-    const parts = svgRegex.exec(data)
-    if (!parts) {
-      throw new Error('Invalid SVG fuck')
-    }
-
-    const [, head, body] = parts
-    let retval = `${head} {...$$restProps}${body}`
-    if (options.transformComponent) {
-      retval = options.transformComponent(data)
-    }
-    return retval
-  }
-
   return {
     name: 'sveltekit-svg',
     async transform(
@@ -155,10 +134,7 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
         return source
       }
 
-      let svgo =
-        typeof options.svgoOptions === 'object'
-          ? { ...options.svgoOptions }
-          : options.svgoOptions
+      let svgo = options.svgoOptions
       let isSvgoDataUri = false
 
       if (svgo && typeof svgo === 'object') {

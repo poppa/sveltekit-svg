@@ -14,34 +14,6 @@ test('SVG as inline component', async ({ page }) => {
   expect(await outerHtml(svg)).toMatchSnapshot('inline-comp.svg')
 })
 
-test('SVG as advanced inline component with title and props', async ({
-  page,
-}) => {
-  await page.goto('/')
-  const svg = page.locator('#inline-advanced-comp-title > svg')
-  expect(await outerHtml(svg)).toMatchSnapshot('inline-advanced-comp-title.svg')
-})
-
-test('SVG as advanced inline component with title no props', async ({
-  page,
-}) => {
-  await page.goto('/')
-  const svg = page.locator('#inline-advanced-comp-title-no-props > svg')
-  expect(await outerHtml(svg)).toMatchSnapshot(
-    'inline-advanced-comp-title-no-props.svg'
-  )
-})
-
-test('SVG as advanced inline component no default title with props', async ({
-  page,
-}) => {
-  await page.goto('/')
-  const svg = page.locator('#inline-advanced-comp-notitle > svg')
-  expect(await outerHtml(svg)).toMatchSnapshot(
-    'inline-advanced-comp-notitle.svg'
-  )
-})
-
 test('SVG as inline string', async ({ page }) => {
   await page.goto('/')
   const svg = page.locator('#inline-string > svg')
