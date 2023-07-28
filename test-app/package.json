@@ -18,7 +18,6 @@
     "svelte": "^4.0.0",
     "svelte-check": "^3.4.4",
     "svelte-preprocess": "^5.0.4",
-	"svgdom": "^0.1.14",
     "svgo": "^3.0.2",
     "vite": "^4.2.0"
   }

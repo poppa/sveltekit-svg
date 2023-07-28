@@ -3,11 +3,7 @@ declare module '*.svg?component' {
   import type { SVGAttributes } from 'svelte/elements'
 
   const content: ComponentType<
-    SvelteComponentTyped<
-      SVGAttributes<SVGSVGElement> & {
-        title?: string
-      }
-    >
+    SvelteComponentTyped<SVGAttributes<SVGSVGElement>>
   >
 
   export default content
