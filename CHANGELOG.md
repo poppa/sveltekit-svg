@@ -5,6 +5,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.0.1] 2023-08-03
+
+### Changed
+
+Render the contents of the `<svg>` tag using `{@html}` in the component mode.
+
+This is to prevent Svelte having to parse the entire SVG.
+
+Thanks [Arad Alvand](https://github.com/aradalvand) for the code.
+
+This solves [#39](https://github.com/poppa/sveltekit-svg/issues/39)
+
+## [4.0.0] 2023-06-23
+
+Updated dependencies and stuff to play along with Svelte 4
+
+No code changes
+
 ## [3.0.1] 2023-05-20
 
 ### Changed
@@ -277,7 +295,9 @@ Thanks to [Jani](https://github.com/ljani) for the contributions
 
 ---
 
-[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v3.0.1...HEAD
+[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v4.0.1...HEAD
+[4.0.1]: https://github.com/poppa/sveltekit-svg/compare/v4.0.0...v4.0.1
+[4.0.0]: https://github.com/poppa/sveltekit-svg/compare/v3.0.1...v4.0.0
 [3.0.1]: https://github.com/poppa/sveltekit-svg/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/poppa/sveltekit-svg/compare/v2.1.2...v3.0.0
 [2.1.2]: https://github.com/poppa/sveltekit-svg/compare/v2.1.1...v2.1.2
