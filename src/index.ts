@@ -22,6 +22,10 @@ interface Options {
   type?: 'src' | 'url' | 'component' | 'dataurl'
   /**
    * Verbatim [SVGO](https://github.com/svg/svgo) options
+   *
+   * If no options are given, the SVG will be optimized with the default SVGO
+   * options.
+   * If `false` SVGO will be bypassed altogether
    */
   svgoOptions?: Config | false
   /**
