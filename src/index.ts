@@ -172,10 +172,7 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
         let data = (await readFile(filename)).toString('utf-8')
         const opt =
           svgo !== false
-            ? optimize(data, {
-                path: filename,
-                ...(svgo || {}),
-              })
+            ? optimize(data, { path: filename, ...svgo })
             : { data }
 
         if (isSvgoOptimizeError(opt)) {
