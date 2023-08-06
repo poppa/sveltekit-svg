@@ -43,6 +43,18 @@ interface Options {
    * ```
    */
   includePaths?: string[]
+
+  /**
+   * Hook that lets you transform the svg to a raw Svelte component yourself,
+   * before being passed to the Svelte compiler.
+   *
+   * @param rawSvg The raw SVG data as read from disk
+   * @param splitSvg The SVG split into parts, e.g its attributes and
+   *  its content
+   * @returns This should return a complete Svelte component that can be passed
+   *  to the Svelte compiler
+   */
+  preCompileHook?(rawSvg: string, splitSvg: SplitSvg): string
 }
 
 type Position = {
@@ -60,6 +72,29 @@ type CompileError = Error & {
   end: Position
 }
 
+type SplitSvg = {
+  /**
+   * The attributes of an SVG as a string
+   *
+   * Given `<svg width="200" height="100">` this will be
+   * `width="200" height="100"`
+   */
+  attributes: string | undefined
+  /**
+   * The inner content of an SVG
+   *
+   * Given `<svg><g><path/></g></svg>` this will be `<g><path/></g>`.
+   */
+  content: string | undefined
+  /**
+   * The default generated (by this plugin) Svelte component as a string
+   *
+   * Given `<svg width="100"><path/></svg>` this will be something like
+   * `<svg width="100" {...$$props}>{@html "<path/>"}</svg>`
+   */
+  component: string
+}
+
 function isCompileError(err: unknown): err is CompileError {
   return err instanceof Error && 'code' in err && 'frame' in err
 }
@@ -73,7 +108,7 @@ function color(start: string, end = '\u001b[0m'): (text: string) => string {
 const yellow = color('\u001b[33m')
 const blue = color('\u001b[34m')
 
-function toComponent(svg: string): string {
+function toComponent(svg: string): SplitSvg {
   const parts = svgRegex.exec(svg)
 
   if (!parts) {
@@ -84,7 +119,13 @@ function toComponent(svg: string): string {
   // JSON.stringify escapes any characters that need to be escaped and
   // surrounds `content` with double quotes
   const contentStrLiteral = JSON.stringify(content)
-  return `<svg ${attributes} {...$$props}>{@html ${contentStrLiteral}}</svg>`
+  const component = `<svg ${attributes} {...$$props}>{@html ${contentStrLiteral}}</svg>`
+
+  return {
+    attributes,
+    content,
+    component,
+  }
 }
 
 function isSvgoOptimizeError(obj: unknown): obj is Error {
@@ -109,6 +150,8 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
   const isType = (str: string | undefined, type: Options['type']): boolean => {
     return (!str && options.type === type) || str === type
   }
+
+  const hook = options.preCompileHook
 
   return {
     name: 'sveltekit-svg',
@@ -183,7 +226,8 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
         if (isType(type, 'src') || isSvgoDataUri) {
           data = `\nexport default \`${opt.data}\`;`
         } else {
-          opt.data = toComponent(opt.data)
+          const comp = toComponent(opt.data)
+          opt.data = hook ? hook(opt.data, comp) : comp.component
           const { js } = compile(opt.data, {
             css: false,
             filename: id,
