@@ -43,7 +43,6 @@ interface Options {
    * ```
    */
   includePaths?: string[]
-
   /**
    * Hook that lets you transform the svg to a raw Svelte component yourself,
    * before being passed to the Svelte compiler.
@@ -87,7 +86,7 @@ type SplitSvg = {
    */
   content: string | undefined
   /**
-   * The default generated (by this plugin) Svelte component as a string
+   * The default generated, by this plugin, Svelte component as a string
    *
    * Given `<svg width="100"><path/></svg>` this will be something like
    * `<svg width="100" {...$$props}>{@html "<path/>"}</svg>`
