@@ -144,7 +144,6 @@ import logo from "./logo.svg?src";
 interface Options {
   /**
    * Output type
-   * @default "component"
    *
    * `dataurl` can also take the following options, which are verbatim SVGO
    * `datauri` options:
@@ -152,12 +151,18 @@ interface Options {
    * - `?dataurl=base64` (default, same as `?dataurl`)
    * - `?dataurl=enc` URL encoded string
    * - `?dataurl=unenc` Plain SVG
+   *
+   * @default "component"
    */
   type?: 'src' | 'url' | 'component' | 'dataurl'
   /**
    * Verbatim [SVGO](https://github.com/svg/svgo) options
+   *
+   * If no options are given, the SVG will be optimized with the default SVGO
+   * options.
+   * If `false` SVGO will be bypassed altogether
    */
-  svgoOptions?: svgo.OptimizeOptions
+  svgoOptions?: Config | false
   /**
    * Paths to apply the SVG plugin on. This can be useful if you want to apply
    * different SVGO options/plugins on different SVGs.
@@ -173,6 +178,17 @@ interface Options {
    * ```
    */
   includePaths?: string[]
+  /**
+   * Hook that lets you transform the svg to a raw Svelte component yourself,
+   * before being passed to the Svelte compiler.
+   *
+   * @param rawSvg The raw SVG data as read from disk
+   * @param splitSvg The SVG split into parts, e.g its attributes and
+   *  its content
+   * @returns This should return a complete Svelte component that can be passed
+   *  to the Svelte compiler
+   */
+  preCompileHook?(rawSvg: string, splitSvg: SplitSvg): string
 }
 ````
 
