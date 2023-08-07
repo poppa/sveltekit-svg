@@ -5,7 +5,7 @@ const outerHtml = async (elem) => {
     return undefined
   }
 
-  return await elem.evaluate((el) => el.outerHTML)
+  return elem.evaluate((el) => el.outerHTML)
 }
 
 test('SVG as inline component', async ({ page }) => {
@@ -68,4 +68,12 @@ test('As data URL with explicit unenc', async ({ page }) => {
   await page.goto('/dataurl')
   const img = page.locator('#unenc > img')
   expect(await img.getAttribute('src')).toMatchSnapshot('unenc.txt')
+})
+
+test('Transform hook', async ({ page }) => {
+  await page.goto('/hook')
+  const svg = page.locator('svg > title')
+  const title = await svg.textContent()
+
+  expect(title).toEqual('Official SVG Logo')
 })
