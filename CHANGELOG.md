@@ -5,6 +5,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.1.0] 2023-08-07
+
+### Added
+
+- Added the `preCompileHook` option.
+
+  This is a function that lets the consumer transform the SVG into a Svelte
+  component before being passed to the Svelte compiler.
+
 ## [4.0.1] 2023-08-03
 
 ### Changed
@@ -295,7 +304,8 @@ Thanks to [Jani](https://github.com/ljani) for the contributions
 
 ---
 
-[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v4.0.1...HEAD
+[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v4.1.0...HEAD
+[4.1.0]: https://github.com/poppa/sveltekit-svg/compare/v4.0.1...v4.1.0
 [4.0.1]: https://github.com/poppa/sveltekit-svg/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/poppa/sveltekit-svg/compare/v3.0.1...v4.0.0
 [3.0.1]: https://github.com/poppa/sveltekit-svg/compare/v3.0.0...v3.0.1
