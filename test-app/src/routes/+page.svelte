@@ -14,6 +14,7 @@
 
 <h2>As inline string</h2>
 <div id="inline-string">
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
   {@html logoSvgString}
 </div>
 
