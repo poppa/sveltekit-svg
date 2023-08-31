@@ -5,6 +5,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- _(empty)_
+
+## [4.1.1] 2023-08-31
+
+### Changed
+
+- Set Svelte compiler css option to 'none'
+
+  The `css` option to Svelte `compile()` has changed and setting it to a
+  `boolean` value has been deprecated.
+
+  This gave the _compilerOptions.css as a boolean is deprecated. Use 'external' instead of false._ warning.
+
+  Since we're disregarding the `css` field in the generated result, we can set this option to `none` and skip all CSS stuff altogether.
+
 ## [4.1.0] 2023-08-07
 
 ### Added
@@ -304,7 +319,8 @@ Thanks to [Jani](https://github.com/ljani) for the contributions
 
 ---
 
-[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v4.1.0...HEAD
+[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v4.1.1...HEAD
+[4.1.1]: https://github.com/poppa/sveltekit-svg/compare/v4.1.0...v4.1.1
 [4.1.0]: https://github.com/poppa/sveltekit-svg/compare/v4.0.1...v4.1.0
 [4.0.1]: https://github.com/poppa/sveltekit-svg/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/poppa/sveltekit-svg/compare/v3.0.1...v4.0.0
