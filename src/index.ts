@@ -211,7 +211,7 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
 
       try {
         const filename = id.replace(/\.svg(\?.*)$/, '.svg')
-        let data = (await readFile(filename)).toString('utf-8')
+        const data = (await readFile(filename)).toString('utf-8')
         const opt =
           svgo !== false
             ? optimize(data, { path: filename, ...svgo })
@@ -223,22 +223,20 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
         }
 
         if (isType(type, 'src') || isSvgoDataUri) {
-          data = `\nexport default \`${opt.data}\`;`
-        } else {
-          const comp = toComponent(opt.data)
-          opt.data = hook ? hook(opt.data, comp) : comp.component
-          const { js } = compile(opt.data, {
-            css: 'none',
-            filename: id,
-            hydratable: !isBuild,
-            namespace: 'svg',
-            generate: isBuild ? 'ssr' : 'dom',
-          })
-
-          data = js.code
+          return `\nexport default \`${opt.data}\`;`
         }
 
-        return data
+        const comp = toComponent(opt.data)
+        opt.data = hook ? hook(opt.data, comp) : comp.component
+        const { js } = compile(opt.data, {
+          css: 'none',
+          filename: id,
+          hydratable: !isBuild,
+          namespace: 'svg',
+          generate: isBuild ? 'ssr' : 'dom',
+        })
+
+        return js
       } catch (err: unknown) {
         if (isCompileError(err) && hasCdata(err.frame)) {
           const msg =
