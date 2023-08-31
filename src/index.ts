@@ -228,7 +228,7 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
           const comp = toComponent(opt.data)
           opt.data = hook ? hook(opt.data, comp) : comp.component
           const { js } = compile(opt.data, {
-            css: false,
+            css: 'none',
             filename: id,
             hydratable: !isBuild,
             namespace: 'svg',
