@@ -179,7 +179,7 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
       const type = match[1]
 
       if (isType(type, 'url')) {
-        return source
+        return { code: source, map: null }
       }
 
       let svgo = options.svgoOptions
@@ -223,7 +223,10 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
         }
 
         if (isType(type, 'src') || isSvgoDataUri) {
-          return `\nexport default \`${opt.data}\`;`
+          return {
+            code: `\nexport default \`${opt.data}\`;`,
+            map: null,
+          }
         }
 
         const comp = toComponent(opt.data)
