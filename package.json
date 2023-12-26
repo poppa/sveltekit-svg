@@ -18,7 +18,7 @@
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc && cp svg.d.ts dist/",
-    "pre-test": "npm link && cd test-app && npm run pre-test",
+    "pre-test": "npx playwright install && npm link && cd test-app && npm run pre-test",
     "test": "cd test-app && npm run test",
     "test:all": "npm ci && npm run build && npm run pre-test && npm run test"
   },
