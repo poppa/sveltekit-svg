@@ -4,7 +4,6 @@
   import logoSvgUrl from '../assets/sample-logo.svg?url'
   import logoSvgDataUrl from '../assets/sample-logo.svg?dataurl'
   import LogoOtherSvgComponent from '../other/other-logo.svg?component'
-  import LogoSvgFromStatic from '../../static/static-sample-logo.svg?component'
 </script>
 
 <h2>As inline component</h2>
@@ -21,11 +20,6 @@
 <h2>As URL in an image tag</h2>
 <div id="image">
   <img src={logoSvgUrl} alt="Sample logo" />
-</div>
-
-<h2>As Inline component from static folder</h2>
-<div id="inline-from-static-folder">
-  <LogoSvgFromStatic />
 </div>
 
 <h2>With component props</h2>

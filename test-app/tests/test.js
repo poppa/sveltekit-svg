@@ -20,12 +20,6 @@ test('SVG as inline string', async ({ page }) => {
   expect(await outerHtml(svg)).toMatchSnapshot('inline-string.svg')
 })
 
-test('As Inline component from static folder', async ({ page }) => {
-  await page.goto('/')
-  const svg = page.locator('#inline-from-static-folder > svg')
-  expect(await outerHtml(svg)).toMatchSnapshot('inline-from-static-folder.svg')
-})
-
 test('As URL in an image tag', async ({ page }) => {
   await page.goto('/')
   const img = page.locator('#image > img')
