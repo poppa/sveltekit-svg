@@ -5,8 +5,8 @@ import type { UserConfig } from 'vite'
 const config: UserConfig = {
   plugins: [
     sveltekit(),
-    svg({ includePaths: [`./src/assets/`, 'src/other/', './src/lib/'] }),
-    svg({ includePaths: [`${process.cwd()}/static`] }),
+    svg({ includePaths: [`./src/assets/`, 'src/other/'] }),
+    svg({ includePaths: ['./src/lib/'] }),
     svg({
       includePaths: [`./src/hook/`],
       preCompileHook(rawSvg, splitSvg) {
