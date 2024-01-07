@@ -1,3 +1,4 @@
+import { normalizePath } from '@rollup/pluginutils'
 import { promises } from 'fs'
 import path from 'path'
 import { compile } from 'svelte/compiler'
@@ -104,6 +105,7 @@ function color(start: string, end = '\u001b[0m'): (text: string) => string {
   return (text: string) => `${start}${text}${end}`
 }
 
+// const green = color('\u001b[32m')
 const yellow = color('\u001b[33m')
 const blue = color('\u001b[34m')
 
@@ -135,6 +137,10 @@ function hasCdata(code: string): boolean {
   return code.includes('<![CDATA[')
 }
 
+function isDevelopmentMode(): boolean {
+  return process.env['NODE_ENV'] === 'development'
+}
+
 function readSvg(options: Options = { type: 'component' }): Plugin {
   const resvg = /\.svg(?:\?(src|url|component|dataurl)(=(base64|(un)?enc))?)?$/
 
@@ -142,7 +148,7 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
     // Normalize the include paths prefixes ahead of time
     options.includePaths = options.includePaths.map((pattern) => {
       const filepath = path.resolve(path.normalize(pattern))
-      return path.sep === '\\' ? filepath.replace(/\\/g, '/') : filepath
+      return normalizePath(filepath)
     })
   }
 
@@ -150,23 +156,77 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
     return (!str && options.type === type) || str === type
   }
 
+  const handlePath = (id: string): boolean => {
+    if (!resvg.test(id)) {
+      return false
+    }
+
+    if (options.includePaths) {
+      return options.includePaths.some((pattern) => {
+        return id.startsWith(pattern)
+      })
+    }
+
+    return true
+  }
+
   const hook = options.preCompileHook
 
-  return {
+  /**
+   * This contains URLs of generated static assets, that is SVGs that are
+   * imported as URLs, so we can optimize them before they are written to disk.
+   */
+  const optmizeUrls = new Set<string>()
+
+  const plugin: Plugin = {
     name: 'sveltekit-svg',
+
+    // NOTE: This will only run in production mode
+    renderChunk(_code, chunk) {
+      // Check if this chunk is an SVG imported as an URL...
+      const mods = chunk.moduleIds.filter(
+        (id) => this.getModuleInfo(id)?.meta['isSvgUrl']
+      )
+
+      // ...if so, we should have 1 module and one importAssets...
+      if (mods.length !== 1 || chunk.viteMetadata?.importedAssets.size !== 1) {
+        return undefined
+      }
+
+      // ...and store the output filename in the lookup so we can verify in
+      //    `generateBundle()` that the SVG should be optimized before written
+      //    to disk
+      const outputId = Array.from(chunk.viteMetadata.importedAssets)[0]
+      if (outputId) {
+        optmizeUrls.add(outputId)
+      }
+    },
+
+    // NOTE: This will only run in production mode
+    async generateBundle(_options, bundle) {
+      // Resolve assets that should be SVGO optimized before written to disk.
+      // Such assets should exist in the `optimizeUrl` lookup data structure.
+      for (const [k, v] of Object.entries(bundle)) {
+        if (!optmizeUrls.has(k) || v.type !== 'asset') {
+          continue
+        }
+
+        const optSvg = optimize(
+          v.source.toString(),
+          options.svgoOptions || undefined
+        )
+
+        v.source = Buffer.from(optSvg.data)
+      }
+    },
+
     async transform(
       source: string,
       id: string,
       transformOptions?: { ssr?: boolean }
     ) {
-      if (options.includePaths) {
-        const isIncluded = options.includePaths.some((pattern) => {
-          return id.startsWith(pattern)
-        })
-
-        if (!isIncluded) {
-          return undefined
-        }
+      if (!handlePath(id)) {
+        return undefined
       }
 
       const match = id.match(resvg)
@@ -179,7 +239,15 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
       const type = match[1]
 
       if (isType(type, 'url')) {
-        return { code: source, map: null }
+        if (isDevelopmentMode()) {
+          const msg = `"url" imports are not optimized in development mode`
+          this.info({
+            id,
+            message: msg,
+          })
+        }
+
+        return { code: source, map: null, meta: { isSvgUrl: true } }
       }
 
       let svgo = options.svgoOptions
@@ -268,6 +336,13 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
       }
     },
   }
+
+  if (isDevelopmentMode()) {
+    delete plugin.renderChunk
+    delete plugin.generateBundle
+  }
+
+  return plugin
 }
 
 export = readSvg

@@ -69,6 +69,7 @@
   "homepage": "https://github.com/poppa/sveltekit-svg#readme",
   "devDependencies": {
     "@playwright/test": "^1.40.1",
+    "@rollup/pluginutils": "^5.1.0",
     "@types/node": "^15.14.9",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
