@@ -7,9 +7,12 @@ module.exports = {
     'prettier',
   ],
   plugins: ['@typescript-eslint'],
+  ignorePatterns: ['.eslintrc.js'],
   parserOptions: {
     // sourceType: 'module',
     ecmaVersion: 2020,
+    tsconfigRootDir: __dirname,
+    project: ['./tsconfig.json', './test-app/tsconfig.json'],
   },
   env: {
     browser: true,
@@ -39,6 +42,19 @@ module.exports = {
         ignoreStrings: true,
         ignoreTemplateLiterals: true,
         ignoreRegExpLiterals: true,
+      },
+    ],
+    // --------------
+    // no-unused-vars
+    // --------------
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        vars: 'all',
+        args: 'after-used',
+        ignoreRestSiblings: true,
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^\\$\\$(Props|Events|Slots)$',
       },
     ],
   },
