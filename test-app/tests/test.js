@@ -71,3 +71,18 @@ test('Transform hook', async ({ page }) => {
 
   expect(title).toEqual('Official SVG Logo')
 })
+
+test('Optimized URL import', async ({ page }) => {
+  await page.goto('/imgurl')
+  const samplelogo = await page.locator('img#samplelogo').getAttribute('src')
+  const otherlogo = await page.locator('img#otherlogo').getAttribute('src')
+
+  await page.goto(samplelogo)
+
+  let data = await page.content()
+  expect(data).toMatchSnapshot('samplelogoopturl.svg')
+
+  await page.goto(otherlogo)
+  data = await page.content()
+  expect(data).toMatchSnapshot('otherlogoopturl.svg')
+})
