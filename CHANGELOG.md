@@ -13,6 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support for Svelte 5 (Experimental)
 
+## [4.2.1] 2024-01-14
+
+### Changed
+
+- `@rollup/pluginutils` needs to be a dependency.
+
+  This should fix [#54](https://github.com/poppa/sveltekit-svg/issues/54)
+
 ## [4.2.0] 2024-01-08
 
 ### Added
@@ -358,7 +366,8 @@ Thanks to [Jani](https://github.com/ljani) for the contributions
 
 ---
 
-[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v4.2.0...HEAD
+[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v4.2.1...HEAD
+[4.2.1]: https://github.com/poppa/sveltekit-svg/compare/v4.2.0...v4.2.1
 [4.2.0]: https://github.com/poppa/sveltekit-svg/compare/v4.1.3...v4.2.0
 [4.1.3]: https://github.com/poppa/sveltekit-svg/compare/v4.1.2...v4.1.3
 [4.1.2]: https://github.com/poppa/sveltekit-svg/compare/v4.1.1...v4.1.2
