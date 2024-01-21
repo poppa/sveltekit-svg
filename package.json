@@ -20,7 +20,11 @@
     "build": "tsc && cp svg.d.ts dist/",
     "pre-test": "npx playwright install && npm link && cd test-app && npm run pre-test",
     "test": "cd test-app && npm run test",
-    "test:all": "npm ci && npm run build && npm run pre-test && npm run test"
+    "test:all": "npm ci && npm run build && npm run pre-test && npm run test",
+    "clean": "rimraf dist && rimraf node_modules",
+    "clean:test-app": "rimraf test-app/node_modules && rimraf test-app/build && rimraf test-app/test-results",
+    "clean:all": "npm run clean:test-app && npm run clean",
+    "bootstrap": "npm ci && cd test-app && npm ci"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -76,6 +80,7 @@
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-prettier": "^5.1.2",
+    "rimraf": "^5.0.5",
     "svelte": "^4.2.8",
     "svelte-check": "^3.6.2",
     "svelte-preprocess": "^5.1.3",
