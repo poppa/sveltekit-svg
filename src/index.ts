@@ -306,6 +306,17 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
           generate: isBuild ? 'server' : 'client',
         })
 
+        // Remove query string from sources
+        js.map.sources.forEach((v, idx, a) => {
+          if (v.includes('?')) {
+            const t = v.split('?')[0]
+
+            if (t) {
+              a[idx] = t
+            }
+          }
+        })
+
         return js
       } catch (err: unknown) {
         if (isCompileError(err) && hasCdata(err.frame)) {
