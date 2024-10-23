@@ -300,11 +300,21 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
         const comp = toComponent(opt.data)
         opt.data = hook ? hook(opt.data, comp) : comp.component
         const { js } = compile(opt.data, {
-          css: 'none',
+          css: 'external',
           filename: id,
-          hydratable: !isBuild,
           namespace: 'svg',
-          generate: isBuild ? 'ssr' : 'dom',
+          generate: isBuild ? 'server' : 'client',
+        })
+
+        // Remove query string from sources
+        js.map.sources.forEach((v, idx, a) => {
+          if (v.includes('?')) {
+            const t = v.split('?')[0]
+
+            if (t) {
+              a[idx] = t
+            }
+          }
         })
 
         return js

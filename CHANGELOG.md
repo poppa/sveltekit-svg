@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - _(empty)_
 
+## [5.0.0-svelte5.0] 2024-01-13
+
+### Added
+
+- Support for Svelte 5 (Experimental)
+
 ## [4.2.1] 2024-01-14
 
 ### Changed
