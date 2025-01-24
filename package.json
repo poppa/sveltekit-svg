@@ -72,28 +72,27 @@
   },
   "homepage": "https://github.com/poppa/sveltekit-svg#readme",
   "devDependencies": {
-    "@playwright/test": "^1.40.1",
-    "@types/node": "^20.10.7",
-    "@typescript-eslint/eslint-plugin": "^6.5.0",
-    "@typescript-eslint/parser": "^6.5.0",
+    "@playwright/test": "1.50.0",
+    "@types/node": "22.10.10",
+    "@typescript-eslint/eslint-plugin": "8.21.0",
+    "@typescript-eslint/parser": "8.21.0",
     "cross-env": "^7.0.3",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^8.10.0",
-    "eslint-plugin-prettier": "^5.1.2",
-    "svelte": "^5.0.5",
-    "svelte-check": "^4.0.5",
+    "eslint": "9.18.0",
+    "eslint-config-prettier": "10.0.1",
+    "eslint-plugin-prettier": "5.2.3",
+    "svelte": "5.19.2",
+    "svelte-check": "4.1.4",
     "svelte-preprocess": "^6.0.3",
-    "svgo": "^3.2.0",
-    "tslib": "^2.6.2",
-    "typescript": "^5.3.3",
+    "tslib": "2.8.1",
+    "typescript": "5.7.3",
     "vite": "^5.4.10"
   },
   "peerDependencies": {
     "svelte": ">=5.x",
-    "svgo": ">=3.x",
     "vite": ">=5.x"
   },
   "dependencies": {
-    "@rollup/pluginutils": "^5.1.0"
+    "@rollup/pluginutils": "5.1.4",
+    "svgo": "^3.2.0"
   }
 }
