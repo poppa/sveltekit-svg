@@ -221,5 +221,9 @@ following import statement to `src/app.d.ts` (or any `.d.ts` file somewhere in t
 project where `tsc` can find it).
 
 ```ts
-import '@poppanator/sveltekit-svg/dist/svg'
+import '@poppanator/sveltekit-svg/dist/svg.d.ts'
 ```
+
+> **NOTE!** If you have `module`/`moduleResolution` set to `NodeNext` in your
+> Typescript config, you **MUST** include `.d.ts` in the import of the SVG
+> type definition.
