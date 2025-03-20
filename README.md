@@ -3,7 +3,9 @@
 This plugin makes it possible to import SVG files as Svelte
 components, inline SVG code or urls.
 
-_NOTE! This plugin isn't just for SvelteKit, but works for any Svelte
+> ### **NOTE!** For **Svelte 4** projects, use version 4 of this plugin
+
+> _NOTE! This plugin isn't just for SvelteKit, but works for any Svelte
 project using Vite_
 
 ## Install
@@ -192,7 +194,23 @@ interface Options {
 }
 ````
 
+## Typescript
+
+For Typescript not to complain about `file.svg?component` et.al, add the
+following import statement to `src/app.d.ts` (or any `.d.ts` file somewhere in the path of your
+project where `tsc` can find it).
+
+```ts
+import '@poppanator/sveltekit-svg/dist/svg.d.ts'
+```
+
+> **NOTE!** If you have `module`/`moduleResolution` set to `NodeNext` in your
+> Typescript config, you **MUST** include `.d.ts` in the import of the SVG
+> type definition.
+
 ## Notes on using with _Jest_
+
+_I don't know if this still applies, but it's kept here for good measure_
 
 According to a report [_Jest_](https://jestjs.io/) will have trouble
 transforming `.svg` files when such is imported as a Svelte component.
@@ -213,17 +231,3 @@ module.exports = {
 where `src/lib/EmptyIcon.svelte` can contain just `<svg />`.
 
 > [See the reported issue and solution](https://github.com/poppa/sveltekit-svg/issues/22)
-
-## Typescript
-
-For Typescript not to complain about `file.svg?component` et.al, add the
-following import statement to `src/app.d.ts` (or any `.d.ts` file somewhere in the path of your
-project where `tsc` can find it).
-
-```ts
-import '@poppanator/sveltekit-svg/dist/svg.d.ts'
-```
-
-> **NOTE!** If you have `module`/`moduleResolution` set to `NodeNext` in your
-> Typescript config, you **MUST** include `.d.ts` in the import of the SVG
-> type definition.
