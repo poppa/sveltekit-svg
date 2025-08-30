@@ -93,6 +93,6 @@
   },
   "dependencies": {
     "@rollup/pluginutils": "5.1.4",
-    "svgo": "^3.2.0"
+    "svgo": "^4.0.0"
   }
 }
