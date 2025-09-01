@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - _(empty)_
 
+## [6.0.0] 2025-09-01
+
+### Breaking
+
+- SVGO is updated to new major version, v4, which changes the default
+  configuration of SVGO. If you rely on some SVGO defaults, take a closer
+  look at the [SVGO v3 -> v4 migration guide](https://svgo.dev/docs/migrations/migration-from-v3-to-v4/)
+
 ## [5.0.1] 2025-03-20
 
 ### Changed
