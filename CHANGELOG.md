@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - _(empty)_
 
+## [5.0.1] 2025-03-20
+
+### Changed
+
+- Maintenance, upgraded NPM packages
+
+## [5.0.0] 2024-10-23
+
+### Added
+
+- Official support for Svelte 5
+
 ## [5.0.0-svelte5.0] 2024-01-13
 
 ### Added
@@ -366,7 +378,9 @@ Thanks to [Jani](https://github.com/ljani) for the contributions
 
 ---
 
-[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v4.2.1...HEAD
+[unreleased]: https://github.com/poppa/sveltekit-svg/compare/v5.0.1...HEAD
+[5.0.1]: https://github.com/poppa/sveltekit-svg/compare/v5.0.0...v5.0.1
+[5.0.0]: https://github.com/poppa/sveltekit-svg/compare/v4.2.0...v5.0.0
 [4.2.1]: https://github.com/poppa/sveltekit-svg/compare/v4.2.0...v4.2.1
 [4.2.0]: https://github.com/poppa/sveltekit-svg/compare/v4.1.3...v4.2.0
 [4.1.3]: https://github.com/poppa/sveltekit-svg/compare/v4.1.2...v4.1.3
