@@ -27,7 +27,7 @@ test('As URL in an image tag', async ({ page }) => {
   const img = page.locator('#image > img')
   await expect(img).toHaveAttribute(
     'src',
-    expect.stringContaining('sample-logo')
+    expect.stringContaining('assets/sample-logo')
   )
   await expect(img).toHaveAttribute('alt', 'Sample logo')
   await expect(img).toHaveScreenshot()
