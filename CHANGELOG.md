@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - _(empty)_
 
+## [6.0.1] 2025-11-26
+
+### Fixed
+
+- There was a bug when mutiple files of different types than SVG was imported
+  in a module. The other file types was let through to the SVG parser, which
+  failed miserably at this point.
+
+  For a background, see issue [#74](https://github.com/poppa/sveltekit-svg/issues/74)
+
 ## [6.0.0] 2025-09-01
 
 ### Breaking
@@ -387,6 +397,8 @@ Thanks to [Jani](https://github.com/ljani) for the contributions
 ---
 
 [unreleased]: https://github.com/poppa/sveltekit-svg/compare/v5.0.1...HEAD
+[6.0.1]: https://github.com/poppa/sveltekit-svg/compare/v6.0.0...v6.0.1
+[6.0.0]: https://github.com/poppa/sveltekit-svg/compare/v5.0.1...v6.0.0
 [5.0.1]: https://github.com/poppa/sveltekit-svg/compare/v5.0.0...v5.0.1
 [5.0.0]: https://github.com/poppa/sveltekit-svg/compare/v4.2.0...v5.0.0
 [4.2.1]: https://github.com/poppa/sveltekit-svg/compare/v4.2.0...v4.2.1
