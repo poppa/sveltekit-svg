@@ -3,7 +3,7 @@ const config = {
   testMatch: /tests\/.*.js$/,
   webServer: {
     command: 'npm run build && npm run preview',
-    port: 4173,
+    port: 4177,
   },
 }
 

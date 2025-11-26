@@ -97,3 +97,13 @@ test('Optimized URL import', async ({ page }) => {
   data = await page.content()
   expect(data).toMatchSnapshot('otherlogoopturl.svg')
 })
+
+test(`Issue #74: Multiple URL imports`, async ({ page }) => {
+  await page.goto('/ticket-74')
+
+  const wavUrl = await page.locator('span#wav').textContent()
+  const svgUrl = await page.locator('span#svg').textContent()
+
+  expect(wavUrl.endsWith('wav')).toEqual(true)
+  expect(svgUrl.endsWith('svg')).toEqual(true)
+})
