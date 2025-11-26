@@ -183,22 +183,34 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
 
     // NOTE: This will only run in production mode
     renderChunk(_code, chunk) {
+      if (!chunk.viteMetadata) {
+        return undefined
+      }
+
       // Check if this chunk is an SVG imported as an URL...
       const mods = chunk.moduleIds.filter(
         (id) => this.getModuleInfo(id)?.meta['isSvgUrl']
       )
 
       // ...if so, we should have 1 module and one importAssets...
-      if (mods.length !== 1 || chunk.viteMetadata?.importedAssets.size !== 1) {
+      if (mods.length !== 1) {
         return undefined
       }
 
-      // ...and store the output filename in the lookup so we can verify in
-      //    `generateBundle()` that the SVG should be optimized before written
-      //    to disk
-      const outputId = Array.from(chunk.viteMetadata.importedAssets)[0]
-      if (outputId) {
-        optmizeUrls.add(outputId)
+      const importedAssets = Array.from(chunk.viteMetadata.importedAssets)
+
+      for (const asset of importedAssets) {
+        // This may happen when multiple different file types are imported as
+        // URLs in the same module. See
+        // https://github.com/poppa/sveltekit-svg/issues/74 for the issue
+        if (!asset.match(resvg)) {
+          continue
+        }
+
+        // ...and store the output filename in the lookup so we can verify in
+        //    `generateBundle()` that the SVG should be optimized before written
+        //    to disk
+        optmizeUrls.add(asset)
       }
     },
 
