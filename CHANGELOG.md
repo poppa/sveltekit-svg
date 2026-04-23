@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - _(empty)_
 
+## [7.0.0] 2026-04-23
+
+### Changed
+
+- This update is only a maintenance update and no code is changed. All core
+  packages are updated to the most viable latest release.
+
+- Changed the package type to `module`
+
+- Removed the Vite 5 peer dependency, and added `>= 6 || >= 7 || >= 8`.
+
 ## [6.0.1] 2025-11-26
 
 ### Fixed

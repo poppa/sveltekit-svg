@@ -367,4 +367,4 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
   return plugin
 }
 
-export = readSvg
+export default readSvg
