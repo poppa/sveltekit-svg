@@ -1,4 +1,9 @@
 import { expect, test } from '@playwright/test'
+import { readFile } from 'node:fs/promises'
+import { basename, join } from 'node:path'
+import rollupNative from 'rollup/dist/native.js'
+
+const { xxhashBase64Url } = rollupNative
 
 const outerHtml = async (elem) => {
   if (!elem) {
@@ -6,6 +11,27 @@ const outerHtml = async (elem) => {
   }
 
   return elem.evaluate((el) => el.outerHTML)
+}
+
+const builtAssetPath = (assetUrl) => {
+  const { pathname } = new URL(assetUrl, 'http://localhost:4177')
+  const appPath = pathname.slice(pathname.indexOf('/_app/') + 1)
+
+  return join(process.cwd(), '.svelte-kit/output/client', appPath)
+}
+
+const expectAssetHashMatchesContent = async (assetUrl) => {
+  const file = builtAssetPath(assetUrl)
+  const content = await readFile(file)
+  const hash = xxhashBase64Url(content).slice(0, 8)
+
+  expect(basename(file)).toContain(`.${hash}.`)
+}
+
+const cssUrl = (value) => {
+  const match = /^url\("?(.+?)"?\)$/.exec(value)
+
+  return match?.[1]
 }
 
 test('SVG as inline component', async ({ page }) => {
@@ -88,6 +114,8 @@ test('Optimized URL import', async ({ page }) => {
   const samplelogo = await page.locator('img#samplelogo').getAttribute('src')
   const otherlogo = await page.locator('img#otherlogo').getAttribute('src')
 
+  await expectAssetHashMatchesContent(samplelogo)
+
   await page.goto(samplelogo)
 
   let data = await page.content()
@@ -96,6 +124,22 @@ test('Optimized URL import', async ({ page }) => {
   await page.goto(otherlogo)
   data = await page.content()
   expect(data).toMatchSnapshot('otherlogoopturl.svg')
+})
+
+test('Optimized CSS URL import', async ({ page }) => {
+  await page.goto('/cssurl')
+
+  const backgroundImage = await page
+    .locator('#css-url')
+    .evaluate((el) => getComputedStyle(el).backgroundImage)
+  const samplelogo = cssUrl(backgroundImage)
+
+  expect(samplelogo).toBeTruthy()
+  await expectAssetHashMatchesContent(samplelogo)
+  await page.goto(samplelogo)
+
+  const data = await page.content()
+  expect(data).toMatchSnapshot('css-url-opt.svg')
 })
 
 test(`Issue #74: Multiple URL imports`, async ({ page }) => {
