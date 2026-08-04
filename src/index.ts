@@ -143,6 +143,7 @@ function isDevelopmentMode(): boolean {
 
 function readSvg(options: Options = { type: 'component' }): Plugin {
   const resvg = /\.svg(?:\?(src|url|component|dataurl)(=(base64|(un)?enc))?)?$/
+  let root = normalizePath(process.cwd())
 
   if (options.includePaths) {
     // Normalize the include paths prefixes ahead of time
@@ -172,63 +173,177 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
 
   const hook = options.preCompileHook
 
-  /**
-   * This contains URLs of generated static assets, that is SVGs that are
-   * imported as URLs, so we can optimize them before they are written to disk.
-   */
-  const optmizeUrls = new Set<string>()
+  const filename = (id: string): string => id.replace(/\.svg(\?.*)$/, '.svg')
+  const optimizeAsset = (svg: string, file?: string): string | undefined => {
+    if (options.svgoOptions === false) {
+      return svg
+    }
+
+    const opt = optimize(svg, {
+      path: file,
+      ...(options.svgoOptions || {}),
+    })
+
+    if (isSvgoOptimizeError(opt)) {
+      console.error('Got optimize error from SVGO:', opt)
+      return undefined
+    }
+
+    return opt.data
+  }
+
+  const assetName = (file: string): string => path.basename(file)
+  const assetOriginalName = (
+    asset: { originalFileName?: string | null; originalFileNames?: string[] },
+    fileName: string
+  ): string | undefined => {
+    const originalName =
+      asset.originalFileNames?.find((name) => name.endsWith('.svg')) ??
+      asset.originalFileName
+
+    if (originalName) {
+      return originalName
+    }
+
+    if (!fileName.includes('-') && fileName.endsWith('.svg')) {
+      return fileName
+    }
+
+    return undefined
+  }
+
+  const assetId = (originalName: string): string => {
+    const file = path.isAbsolute(originalName)
+      ? originalName
+      : path.resolve(root, originalName)
+
+    return normalizePath(file)
+  }
+
+  const replaceAssetReferences = (
+    source: string,
+    replacements: Map<string, string>
+  ): string => {
+    let code = source
+
+    for (const [oldFileName, newFileName] of replacements) {
+      code = code.split(oldFileName).join(newFileName)
+      code = code
+        .split(path.basename(oldFileName))
+        .join(path.basename(newFileName))
+    }
+
+    return code
+  }
 
   const plugin: Plugin = {
     name: 'sveltekit-svg',
+    enforce: 'pre',
 
-    // NOTE: This will only run in production mode
-    renderChunk(_code, chunk) {
-      if (!chunk.viteMetadata) {
+    configResolved(config) {
+      root = normalizePath(config.root)
+    },
+
+    async load(id) {
+      if (isDevelopmentMode() || !handlePath(id)) {
         return undefined
       }
 
-      // Check if this chunk is an SVG imported as an URL...
-      const mods = chunk.moduleIds.filter(
-        (id) => this.getModuleInfo(id)?.meta['isSvgUrl']
-      )
+      const match = id.match(resvg)
 
-      // ...if so, we should have 1 module and one importAssets...
-      if (mods.length !== 1) {
+      if (!match || !isType(match[1], 'url') || options.svgoOptions === false) {
         return undefined
       }
 
-      const importedAssets = Array.from(chunk.viteMetadata.importedAssets)
+      const file = filename(id)
+      const data = (await readFile(file)).toString('utf-8')
+      const optSvg = optimizeAsset(data, file)
 
-      for (const asset of importedAssets) {
-        // This may happen when multiple different file types are imported as
-        // URLs in the same module. See
-        // https://github.com/poppa/sveltekit-svg/issues/74 for the issue
-        if (!asset.match(resvg)) {
-          continue
-        }
+      if (!optSvg) {
+        return undefined
+      }
 
-        // ...and store the output filename in the lookup so we can verify in
-        //    `generateBundle()` that the SVG should be optimized before written
-        //    to disk
-        optmizeUrls.add(asset)
+      const referenceId = this.emitFile({
+        type: 'asset',
+        name: assetName(file),
+        originalFileName: normalizePath(path.relative(root, file)),
+        source: Buffer.from(optSvg),
+      })
+
+      return {
+        code: `export default "__VITE_ASSET__${referenceId}__";`,
+        map: null,
+        meta: { isSvgUrl: true },
       }
     },
 
-    // NOTE: This will only run in production mode
-    async generateBundle(_options, bundle) {
-      // Resolve assets that should be SVGO optimized before written to disk.
-      // Such assets should exist in the `optimizeUrl` lookup data structure.
-      for (const [k, v] of Object.entries(bundle)) {
-        if (!optmizeUrls.has(k) || v.type !== 'asset') {
+    generateBundle(_options, bundle) {
+      if (options.svgoOptions === false) {
+        return
+      }
+
+      const replacements = new Map<string, string>()
+
+      for (const [fileName, output] of Object.entries(bundle)) {
+        if (output.type !== 'asset' || !fileName.endsWith('.svg')) {
           continue
         }
 
-        const optSvg = optimize(
-          v.source.toString(),
-          options.svgoOptions || undefined
-        )
+        const originalName = assetOriginalName(output, fileName)
 
-        v.source = Buffer.from(optSvg.data)
+        if (!originalName || !handlePath(assetId(originalName))) {
+          continue
+        }
+
+        const source = output.source.toString()
+        const optSvg = optimizeAsset(source, assetId(originalName))
+
+        if (!optSvg || optSvg === source) {
+          continue
+        }
+
+        const referenceId = this.emitFile({
+          type: 'asset',
+          name: assetName(originalName),
+          originalFileName: originalName,
+          source: Buffer.from(optSvg),
+        })
+        const newFileName = this.getFileName(referenceId)
+
+        if (newFileName === fileName) {
+          output.source = Buffer.from(optSvg)
+          continue
+        }
+
+        replacements.set(fileName, newFileName)
+        delete bundle[fileName]
+      }
+
+      if (!replacements.size) {
+        return
+      }
+
+      for (const output of Object.values(bundle)) {
+        if (output.type === 'chunk') {
+          output.code = replaceAssetReferences(output.code, replacements)
+
+          for (const [oldFileName, newFileName] of replacements) {
+            const metadata = output.viteMetadata
+
+            if (metadata?.importedAssets?.has(oldFileName)) {
+              metadata.importedAssets.delete(oldFileName)
+              metadata.importedAssets.add(newFileName)
+            }
+          }
+
+          continue
+        }
+
+        if (typeof output.source !== 'string') {
+          continue
+        }
+
+        output.source = replaceAssetReferences(output.source, replacements)
       }
     },
 
@@ -290,12 +405,10 @@ function readSvg(options: Options = { type: 'component' }): Plugin {
       }
 
       try {
-        const filename = id.replace(/\.svg(\?.*)$/, '.svg')
-        const data = (await readFile(filename)).toString('utf-8')
+        const file = filename(id)
+        const data = (await readFile(file)).toString('utf-8')
         const opt =
-          svgo !== false
-            ? optimize(data, { path: filename, ...svgo })
-            : { data }
+          svgo !== false ? optimize(data, { path: file, ...svgo }) : { data }
 
         if (isSvgoOptimizeError(opt)) {
           console.error('Got optimize error from SVGO:', opt)
