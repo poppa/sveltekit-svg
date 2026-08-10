@@ -92,7 +92,7 @@
   "peerDependencies": {
     "svelte": ">=4.x",
     "svgo": ">=3.x",
-    "vite": ">=4.x"
+    "vite": ">4.x"
   },
   "dependencies": {
     "@rollup/pluginutils": "^5.1.0"
